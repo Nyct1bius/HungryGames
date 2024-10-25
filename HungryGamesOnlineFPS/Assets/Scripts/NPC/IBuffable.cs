@@ -4,9 +4,9 @@ using UnityEngine;
 
 public interface IBuffable
 {
-    void Buff(float damageMultiplier, float speedMultiplier);
+    void Buff(float damageMultiplierBuff, float speedMultiplierBuff, float armorBuff);
 
-    void Debuff(float damageDebuff, float speedDebuff);
+    void Debuff(float damageMultiplierDebuff, float speedMultiplierDebuff, float armorDebuff);
 
     void Damage(float damage);
 }
