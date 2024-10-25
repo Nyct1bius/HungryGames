@@ -6,22 +6,26 @@ public class CreatureAI : MonoBehaviour
 {
     private enum State
     {
-        Idle,
-        Moving
+        idle,
+        moving,
+        dead
     }
     private State state;
+    public bool IsMoving = false, isDead = false;
+    public float Health = 100, TimeToRevive, TimeToMove;
+    private float currentHealth, currentTimeToRevive;
 
-    public bool IsMoving = false;
 
     private void Awake()
     {
-        state = State.Idle; 
+        state = State.idle; 
     }
 
     // Start is called before the first frame update
     void Start()
     {
-         
+        currentHealth = Health;
+        currentTimeToRevive = TimeToRevive;
     }
 
     // Update is called once per frame
@@ -29,11 +33,38 @@ public class CreatureAI : MonoBehaviour
     {
         switch (state) 
         {
-            case State.Idle:
+            case State.idle:
+                if (currentHealth <= 0)
+                {
+                    Die();
+                }
                 break;
 
-            case State.Moving:
+            case State.moving:
+                if (currentHealth <= 0)
+                {
+                    Die();
+                }
                 break;
+
+            case State.dead:
+                if (currentTimeToRevive <= 0)
+                {
+                    currentHealth = Health;
+                    currentTimeToRevive = TimeToRevive;
+                    state = State.idle;
+                }
+                else
+                {
+                    currentTimeToRevive -= Time.deltaTime;
+                }
+                break;  
         }
+    }
+
+    private void Die()
+    {
+        isDead = true;
+        state = State.dead;
     }
 }
