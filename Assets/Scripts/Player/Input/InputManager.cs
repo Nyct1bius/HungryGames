@@ -9,7 +9,7 @@ public class InputManager : MonoBehaviour
 {
     PlayerInputAction playerInputActions;
 
-    public event Action OnJump; 
+    public event Action OnJump,OnRun,OnStopRun; 
     private void Awake()
     {
         playerInputActions = new PlayerInputAction();
@@ -17,10 +17,16 @@ public class InputManager : MonoBehaviour
     private void OnEnable()
     {
         playerInputActions.Controls.Enable();
+        playerInputActions.Controls.Jump.performed += PlayerJumped;
+        playerInputActions.Controls.Run.performed += PlayerRun;
+        playerInputActions.Controls.Run.canceled += PlayerStopRun;
     }
     private void OnDisable()
     {
         playerInputActions.Controls.Disable();
+        playerInputActions.Controls.Jump.performed -= PlayerJumped;
+        playerInputActions.Controls.Run.performed -= PlayerRun;
+        playerInputActions.Controls.Run.canceled -= PlayerStopRun;
     }
 
     public Vector2 GetNormalizedInputDirection()
@@ -35,10 +41,17 @@ public class InputManager : MonoBehaviour
         return playerInputActions.Controls.MousePosition.ReadValue<Vector2>();
     }
 
-    public bool PlayerJumped()
+    private void PlayerJumped(InputAction.CallbackContext context)
     {
         OnJump?.Invoke();
-        return playerInputActions.Controls.Jump.triggered;
+    }
+    private void PlayerRun(InputAction.CallbackContext context)
+    {
+        OnRun?.Invoke();
+    }
+    private void PlayerStopRun(InputAction.CallbackContext context)
+    {
+        OnStopRun?.Invoke();
     }
 
 

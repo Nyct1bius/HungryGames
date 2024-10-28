@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class PlayerCameraManager : MonoBehaviour
 {
-    [SerializeField] private float sensX;
-    [SerializeField] private float sensY;
-    [SerializeField] private Transform orientation;
+    private float sensibility;
+    [SerializeField] private Transform playerVisual;
 
     [SerializeField] private InputManager inputManager;
+    [SerializeField] private CinemachineVirtualCamera fpsCamera;
+    private CinemachinePOV povCamera;
 
     private float xRotation;
     private float yRotation;
@@ -17,20 +19,24 @@ public class PlayerCameraManager : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        sensibility = GetComponentInParent<PlayerMovement>().sensibility;
+        povCamera = fpsCamera.GetCinemachineComponent<CinemachinePOV>();
+        povCamera.m_VerticalAxis.m_MaxSpeed = sensibility;
+        povCamera.m_HorizontalAxis.m_MaxSpeed = sensibility;
     }
     private void FixedUpdate()
     {
-        Vector2 mousePos = inputManager.GetMouseDelta();
-        float mouseX = mousePos.x * Time.deltaTime * sensX;
-        float mouseY = mousePos.y * Time.deltaTime * sensY;
+        //Vector2 mousePos = inputManager.GetMouseDelta();
+        //float mouseX = mousePos.x * Time.deltaTime * sensibility;
+        //float mouseY = mousePos.y * Time.deltaTime * sensibility;
 
-        yRotation += mouseX;
-        xRotation -= mouseY;
+        //yRotation += mouseX;
+        //xRotation -= mouseY;
 
-        xRotation = Mathf.Clamp(xRotation, -90, 90);
+        //xRotation = Mathf.Clamp(xRotation, -90, 90);
 
-        //Rotate Camera and orietation
-        transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
-        orientation.rotation = Quaternion.Euler(0, yRotation, 0);
+        ////Rotate Camera and orietation
+        //transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+        playerVisual.rotation = Quaternion.Euler(new Vector3(0, povCamera.m_HorizontalAxis.Value,0));
     }
 }
