@@ -41,7 +41,6 @@ public class GunManager : MonoBehaviour
             if(Physics.Raycast(bulletSpawnPoint.position, direction, out RaycastHit hit, float.MaxValue, mask))
             {
                 TrailRenderer trail = Instantiate(guns.types[currentBulletIndex].bulletTrail, bulletSpawnPoint.position, Quaternion.identity);
-                Debug.Log("Shoot");
                 StartCoroutine(SpawnTrail(trail, hit));
                 lastShootTime = Time.deltaTime;
             }
