@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-public class InputManager : MonoBehaviour
+public class InputManager : NetworkBehaviour
 {
     PlayerInputAction playerInputActions;
 
@@ -57,10 +58,18 @@ public class InputManager : MonoBehaviour
     }
     private void PlayerShoot(InputAction.CallbackContext context)
     {
-       
-           OnShoot?.Invoke();
-        
+        OnShoot?.Invoke();
     }
 
+    IEnumerator ShootLoop()
+    {
+        float inputValue = playerInputActions.Controls.Shoot.ReadValue<float>();
+        while (inputValue != 0)
+        {
+            OnShoot?.Invoke();
+            yield return new WaitForSeconds(0.01f);
+        }
+
+    }
 
 }

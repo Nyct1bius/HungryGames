@@ -1,10 +1,11 @@
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     [Header("Movement variables")]
     [SerializeField] private float speed;
@@ -12,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
 
 
     [Header("Camera variables")]
-    [SerializeField] private Transform cameraTransform;
+    [SerializeField] private GameObject mainCamera;
     [SerializeField] private Transform cameraOffset;
     [SerializeField] private GameObject fpsCamera;
     [SerializeField] private Transform playerVisual;
@@ -23,7 +24,8 @@ public class PlayerMovement : MonoBehaviour
     //Components
     InputManager inputManager;
     Rigidbody rb;
-    private GameObject cameraRef;
+    private GameObject fpsCameraRef;
+    private GameObject mainCameraRef;
 
 
     [Header("Jump variables")]
@@ -39,10 +41,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private RectTransform crosshair;
     private void Awake()
     {
+        mainCameraRef =  Instantiate(mainCamera);
         inputManager = GetComponent<InputManager>();
         rb = GetComponent<Rigidbody>();
-        cameraRef = Instantiate(fpsCamera, cameraOffset.position, Quaternion.identity);
-        PlayerCameraManager cameraManager = cameraRef.GetComponent<PlayerCameraManager>();
+        fpsCameraRef = Instantiate(fpsCamera, cameraOffset.position, Quaternion.identity);
+        PlayerCameraManager cameraManager = fpsCameraRef.GetComponent<PlayerCameraManager>();
         cameraManager.SetupCameraVariables(this.gameObject, playerVisual, inputManager, sensibility, crosshair,gunManager, vCamera);
 
     }
@@ -64,13 +67,18 @@ public class PlayerMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if(!IsOwner)
+        {
+            return;
+        }
+
         HandleGravity();
         Movement();
     }
     private void Movement()
     {
         Vector2 inputDirection = inputManager.GetNormalizedInputDirection();
-        Vector3 moveDir = cameraTransform.forward * inputDirection.y + cameraTransform.right * inputDirection.x;
+        Vector3 moveDir = mainCameraRef.transform.forward * inputDirection.y + mainCameraRef.transform.right * inputDirection.x;
         moveDir.y = 0;
         rb.AddForce(moveDir * currentSpeed, ForceMode.VelocityChange);
     }
