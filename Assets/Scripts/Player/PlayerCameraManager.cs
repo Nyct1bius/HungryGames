@@ -9,8 +9,8 @@ public class PlayerCameraManager : MonoBehaviour
     private GameObject _playerRef;
     private Transform _playerVisual;
 
-    [SerializeField] private GunManager _gunManager;
-    [SerializeField] private CinemachineVirtualCamera fpsCamera;
+    private GunManager _gunManager;
+    private CinemachineVirtualCamera fpsCamera;
  
 
     private InputManager _inputManager;
@@ -40,7 +40,8 @@ public class PlayerCameraManager : MonoBehaviour
         _playerVisual.Rotate(Vector3.up * mouseX);
     }
 
-    public void SetupCameraVariables(GameObject playerRef, Transform playerVisual, InputManager inputManager, float sensibility, RectTransform crosshair, GunManager gunManager, CinemachineVirtualCamera vCamera)
+    public void SetupCameraVariables(GameObject playerRef, Transform playerVisual, InputManager inputManager, float sensibility, 
+                                     RectTransform crosshair, GunManager gunManager, CinemachineVirtualCamera vCamera)
     {
         _playerRef = playerRef;
         _playerVisual = playerVisual;
