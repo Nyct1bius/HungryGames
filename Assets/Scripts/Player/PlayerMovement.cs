@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -12,11 +13,17 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Camera variables")]
     [SerializeField] private Transform cameraTransform;
+    [SerializeField] private Transform cameraOffset;
+    [SerializeField] private GameObject fpsCamera;
+    [SerializeField] private Transform playerVisual;
+    [SerializeField] private CinemachineVirtualCamera vCamera;
+    [SerializeField] private GunManager gunManager;
     [Range(0, 10)]
-    public float sensibility;
+    [SerializeField] private float sensibility;
     //Components
     InputManager inputManager;
     Rigidbody rb;
+    private GameObject cameraRef;
 
 
     [Header("Jump variables")]
@@ -27,10 +34,17 @@ public class PlayerMovement : MonoBehaviour
     [Range (0, -5)]
     [SerializeField] private float gravity;
     private float groundedGravity = -0.05f;
+
+    [Header("Crosshair variables")]
+    [SerializeField] private RectTransform crosshair;
     private void Awake()
     {
         inputManager = GetComponent<InputManager>();
         rb = GetComponent<Rigidbody>();
+        cameraRef = Instantiate(fpsCamera, cameraOffset.position, Quaternion.identity);
+        PlayerCameraManager cameraManager = cameraRef.GetComponent<PlayerCameraManager>();
+        cameraManager.SetupCameraVariables(this.gameObject, playerVisual, inputManager, sensibility, crosshair,gunManager, vCamera);
+
     }
     private void Start()
     {
@@ -51,12 +65,15 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         HandleGravity();
+        Movement();
+    }
+    private void Movement()
+    {
         Vector2 inputDirection = inputManager.GetNormalizedInputDirection();
         Vector3 moveDir = cameraTransform.forward * inputDirection.y + cameraTransform.right * inputDirection.x;
         moveDir.y = 0;
         rb.AddForce(moveDir * currentSpeed, ForceMode.VelocityChange);
     }
-
     private void Jump()
     {
         if (IsGrounded())

@@ -7,25 +7,28 @@ public class GunManager : MonoBehaviour
     [SerializeField] private Transform bulletSpawnPoint;
     [SerializeField] private LayerMask mask;
     [SerializeField] private Guns guns;
-    [SerializeField] private RectTransform aim;
+    private RectTransform crosshair;
     public int currentBulletIndex;
 
     private Animator anim;
     private float lastShootTime;
-    [SerializeField] private InputManager inputManager;
+    private InputManager _inputManager;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
         currentBulletIndex = 0;
     }
-    private void OnEnable()
+
+    public void SetupVariables(InputManager inputManager, RectTransform crosshair)
     {
-        inputManager.OnShoot += Shoot;
+        _inputManager = inputManager;
+        this.crosshair = crosshair;
+        _inputManager.OnShoot += Shoot;
     }
     private void OnDisable()
     {
-        inputManager.OnShoot -= Shoot;
+        _inputManager.OnShoot -= Shoot;
     }
     private void Shoot()
     {
@@ -47,7 +50,6 @@ public class GunManager : MonoBehaviour
 
     private Vector3 GetDirection()
     {
-        Vector3 aimWorldPos = Camera.main.ScreenToWorldPoint(aim.transform.position);
         Vector3 direction = transform.forward;
         if (guns.types[currentBulletIndex].addBulletSpread)
         {
