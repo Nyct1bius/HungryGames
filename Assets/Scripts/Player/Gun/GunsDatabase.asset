@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03f51e28230532b4080a8b7618df2a8b, type: 3}
+  m_Name: GunsDatabase
+  m_EditorClassIdentifier: 
+  types:
+  - name: Pistol
+    ID: 0
+    addBulletSpread: 0
+    bulletSpreadVariance: {x: 0, y: 0, z: 0}
+    shootingSystem: {fileID: 5696961974026004217, guid: 1b0c2f96fd2d5304a8307f16e80914c2, type: 3}
+    ImpactParticleSystem: {fileID: 8535707044595332166, guid: 194ff926cca7541479e029e8d4951f81, type: 3}
+    bulletTrail: {fileID: 5041931304547258541, guid: 9c20c07e1bad49e44acd3b1597747c58, type: 3}
+    shootDelay: 1

@@ -9,7 +9,7 @@ public class InputManager : MonoBehaviour
 {
     PlayerInputAction playerInputActions;
 
-    public event Action OnJump,OnRun,OnStopRun; 
+    public event Action OnJump,OnRun,OnStopRun, OnShoot; 
     private void Awake()
     {
         playerInputActions = new PlayerInputAction();
@@ -20,6 +20,7 @@ public class InputManager : MonoBehaviour
         playerInputActions.Controls.Jump.performed += PlayerJumped;
         playerInputActions.Controls.Run.performed += PlayerRun;
         playerInputActions.Controls.Run.canceled += PlayerStopRun;
+        playerInputActions.Controls.Shoot.performed += PlayerShoot;
     }
     private void OnDisable()
     {
@@ -27,6 +28,7 @@ public class InputManager : MonoBehaviour
         playerInputActions.Controls.Jump.performed -= PlayerJumped;
         playerInputActions.Controls.Run.performed -= PlayerRun;
         playerInputActions.Controls.Run.canceled -= PlayerStopRun;
+        playerInputActions.Controls.Shoot.performed -= PlayerShoot;
     }
 
     public Vector2 GetNormalizedInputDirection()
@@ -52,6 +54,10 @@ public class InputManager : MonoBehaviour
     private void PlayerStopRun(InputAction.CallbackContext context)
     {
         OnStopRun?.Invoke();
+    }
+    private void PlayerShoot(InputAction.CallbackContext context)
+    {
+        OnShoot?.Invoke();
     }
 
 
