@@ -11,7 +11,6 @@ public class PlayerCameraManager : MonoBehaviour
 
     [SerializeField] private InputManager inputManager;
     [SerializeField] private CinemachineVirtualCamera fpsCamera;
-    private CinemachinePOV povCamera;
 
     private float xRotation;
     private float yRotation;
@@ -31,7 +30,7 @@ public class PlayerCameraManager : MonoBehaviour
         yRotation += mouseX;
         xRotation -= mouseY;
 
-        xRotation = Mathf.Clamp(xRotation, -90, 90);
+        xRotation = Mathf.Clamp(xRotation, -75, 75);
 
         //Rotate Camera and orietation
         transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);

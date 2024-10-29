@@ -7,11 +7,11 @@ public class GunManager : MonoBehaviour
     [SerializeField] private Transform bulletSpawnPoint;
     [SerializeField] private LayerMask mask;
     [SerializeField] private Guns guns;
+    [SerializeField] private RectTransform aim;
     public int currentBulletIndex;
 
     private Animator anim;
     private float lastShootTime;
-    private GunTypes bulletType;
     [SerializeField] private InputManager inputManager;
 
     private void Awake()
@@ -38,7 +38,7 @@ public class GunManager : MonoBehaviour
             if(Physics.Raycast(bulletSpawnPoint.position, direction, out RaycastHit hit, float.MaxValue, mask))
             {
                 TrailRenderer trail = Instantiate(guns.types[currentBulletIndex].bulletTrail, bulletSpawnPoint.position, Quaternion.identity);
-
+                Debug.Log("Shoot");
                 StartCoroutine(SpawnTrail(trail, hit));
                 lastShootTime = Time.deltaTime;
             }
@@ -47,6 +47,7 @@ public class GunManager : MonoBehaviour
 
     private Vector3 GetDirection()
     {
+        Vector3 aimWorldPos = Camera.main.ScreenToWorldPoint(aim.transform.position);
         Vector3 direction = transform.forward;
         if (guns.types[currentBulletIndex].addBulletSpread)
         {
@@ -66,7 +67,7 @@ public class GunManager : MonoBehaviour
         float time = 0;
         Vector3 startPosition = trail.transform.position;
 
-        while(time < 1)
+        while(time < 0.3)
         {
             trail.transform.position = Vector3.Lerp(startPosition,hit.point,time);
             time += Time.deltaTime/ trail.time;
