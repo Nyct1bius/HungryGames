@@ -1,23 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GunManager : MonoBehaviour
 {
     [SerializeField] private Transform bulletSpawnPoint;
     [SerializeField] private LayerMask mask;
     [SerializeField] private Guns guns;
+    private bool canShoot = true;
+    private int currentAmmo;
     private RectTransform crosshair;
     public int currentBulletIndex;
 
     private Animator anim;
     private float lastShootTime;
     private InputManager _inputManager;
-
+    Ray mouseWorldPos;
     private void Awake()
     {
         anim = GetComponent<Animator>();
         currentBulletIndex = 0;
+    }
+    private void Start()
+    {
+        currentAmmo = guns.types[currentBulletIndex].maxAmmo;
     }
 
     public void SetupVariables(InputManager inputManager, RectTransform crosshair)
@@ -30,26 +37,42 @@ public class GunManager : MonoBehaviour
     {
         _inputManager.OnShoot -= Shoot;
     }
+ 
     private void Shoot()
     {
-        if (lastShootTime + guns.types[currentBulletIndex].fireRate < Time.time)
+        mouseWorldPos = Camera.main.ScreenPointToRay(crosshair.position);
+        if (canShoot && currentAmmo >= 0)
         {
-            
+            Debug.Log(currentAmmo);
+            currentAmmo--;
+            canShoot = false;
             guns.types[currentBulletIndex].shootingSystem.Play();
-            Vector3 direction = GetDirection();
-
-            if(Physics.Raycast(bulletSpawnPoint.position, direction, out RaycastHit hit, float.MaxValue, mask))
+            if(Physics.Raycast(mouseWorldPos, out RaycastHit hit, float.MaxValue, mask))
             {
                 TrailRenderer trail = Instantiate(guns.types[currentBulletIndex].bulletTrail, bulletSpawnPoint.position, Quaternion.identity);
                 StartCoroutine(SpawnTrail(trail, hit));
-                lastShootTime = Time.deltaTime;
             }
+            StartCoroutine(FireRateDelay(guns.types[currentBulletIndex].fireRate));
         }
+     
+        CheckMag();
+    }
+    private void CheckMag()
+    {
+        if(currentAmmo <= 0)
+        {
+            StartCoroutine(Reload(guns.types[currentBulletIndex].reloadTime));
+        }
+    }
+    IEnumerator Reload(float reloadTime)
+    {
+        yield return new WaitForSeconds(reloadTime);
+        currentAmmo = guns.types[currentBulletIndex].maxAmmo;
     }
 
     private Vector3 GetDirection()
     {
-        Vector3 direction = transform.forward;
+        Vector3 direction = Camera.main.transform.forward;
         if (guns.types[currentBulletIndex].addBulletSpread)
         {
             direction += new Vector3(
@@ -79,6 +102,11 @@ public class GunManager : MonoBehaviour
         Instantiate(guns.types[currentBulletIndex].ImpactParticleSystem, hit.point, Quaternion.LookRotation(hit.normal));
 
         Destroy(trail.gameObject, trail.time);
+    }
+    IEnumerator FireRateDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        canShoot = true;
     }
    
 }

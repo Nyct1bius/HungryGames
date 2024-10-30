@@ -26,6 +26,6 @@ public class GunTypes
     public TrailRenderer bulletTrail;
 
     [Header("Gun capacity/reloading")]
-    public bool maxAmmo;
+    public int maxAmmo;
     public float reloadTime;
 }

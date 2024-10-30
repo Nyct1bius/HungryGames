@@ -41,9 +41,9 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private RectTransform crosshair;
     private void Awake()
     {
-        mainCameraRef =  Instantiate(mainCamera);
         inputManager = GetComponent<InputManager>();
         rb = GetComponent<Rigidbody>();
+        mainCameraRef = Instantiate(mainCamera);
         fpsCameraRef = Instantiate(fpsCamera, cameraOffset.position, Quaternion.identity);
         PlayerCameraManager cameraManager = fpsCameraRef.GetComponent<PlayerCameraManager>();
         cameraManager.SetupCameraVariables(this.gameObject, playerVisual, inputManager, sensibility, crosshair,gunManager, vCamera);
@@ -84,6 +84,11 @@ public class PlayerMovement : NetworkBehaviour
     }
     private void Jump()
     {
+        if (!IsOwner)
+        {
+            return;
+        }
+
         if (IsGrounded())
         {
             rb.AddForce(Vector3.up * jumpForce * 10, ForceMode.Impulse);
@@ -104,11 +109,21 @@ public class PlayerMovement : NetworkBehaviour
 
     private void Run()
     {
+        if (!IsOwner)
+        {
+            return;
+        }
+
         currentSpeed *= 2;
     }
 
     private void StopRun()
     {
+        if (!IsOwner)
+        {
+            return;
+        }
+
         currentSpeed = speed;
     }
 

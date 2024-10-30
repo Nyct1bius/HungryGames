@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using Unity.Netcode;
 
-public class PlayerCameraManager : MonoBehaviour
+public class PlayerCameraManager : NetworkBehaviour
 {
     private float _sensibility;
     private GameObject _playerRef;
@@ -25,6 +26,7 @@ public class PlayerCameraManager : MonoBehaviour
     }
     private void Update()
     {
+        if (!IsOwner) return;
         transform.position = new Vector3(_playerRef.transform.position.x, _playerRef.transform.position.y + 0.7f,  _playerRef.transform.position.z);
         Vector2 mousePos = _inputManager.GetMouseDelta();
         float mouseX = mousePos.x * Time.deltaTime * _sensibility;
