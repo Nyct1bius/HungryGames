@@ -17,7 +17,6 @@ public class PlayerCameraManager : NetworkBehaviour
     private InputManager _inputManager;
     private float xRotation;
     private float yRotation;
-    private Vector3 _cameraOffset;
 
     private void Start()
     {

@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class GunManager : MonoBehaviour
+public class GunManager : NetworkBehaviour
 {
     [SerializeField] private Transform bulletSpawnPoint;
     [SerializeField] private LayerMask mask;
@@ -17,6 +18,9 @@ public class GunManager : MonoBehaviour
     private float lastShootTime;
     private InputManager _inputManager;
     Ray mouseWorldPos;
+    RaycastHit spawnBulletHit;
+    TrailRenderer bulletTrail;
+    ParticleSystem bulletHit;
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -40,6 +44,7 @@ public class GunManager : MonoBehaviour
  
     private void Shoot()
     {
+        if (!IsOwner) return;
         mouseWorldPos = Camera.main.ScreenPointToRay(crosshair.position);
         if (canShoot && currentAmmo >= 0)
         {
@@ -47,11 +52,7 @@ public class GunManager : MonoBehaviour
             currentAmmo--;
             canShoot = false;
             guns.types[currentBulletIndex].shootingSystem.Play();
-            if(Physics.Raycast(mouseWorldPos, out RaycastHit hit, float.MaxValue, mask))
-            {
-                TrailRenderer trail = Instantiate(guns.types[currentBulletIndex].bulletTrail, bulletSpawnPoint.position, Quaternion.identity);
-                StartCoroutine(SpawnTrail(trail, hit));
-            }
+            SpawnTrailServerRpc();
             StartCoroutine(FireRateDelay(guns.types[currentBulletIndex].fireRate));
         }
      
@@ -99,14 +100,56 @@ public class GunManager : MonoBehaviour
         }
       
         trail.transform.position = hit.point;
-        Instantiate(guns.types[currentBulletIndex].ImpactParticleSystem, hit.point, Quaternion.LookRotation(hit.normal));
-
-        Destroy(trail.gameObject, trail.time);
+        spawnBulletHit = hit;
+        SpawnBulletImpactServerRpc();
+        DestroyTrailServerRpc();
+        StartCoroutine(DespawnBulletImpact());
     }
     IEnumerator FireRateDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
         canShoot = true;
     }
-   
+
+    [ServerRpc]
+    private void SpawnTrailServerRpc()
+    {
+        if (Physics.Raycast(mouseWorldPos, out RaycastHit hit, float.MaxValue, mask))
+        {
+            bulletTrail = Instantiate(guns.types[currentBulletIndex].bulletTrail, bulletSpawnPoint.position, Quaternion.identity);
+            NetworkObject networkObject = bulletTrail.GetComponent<NetworkObject>();
+            networkObject.Spawn();  // Spawn bullet across the network
+            StartCoroutine(SpawnTrail(bulletTrail, hit));
+        }
+        
+
+    }
+    
+    [ServerRpc]
+    private void SpawnBulletImpactServerRpc()
+    {
+        bulletHit = Instantiate(guns.types[currentBulletIndex].ImpactParticleSystem, spawnBulletHit.point, Quaternion.LookRotation(spawnBulletHit.normal));
+        NetworkObject networkObject = bulletHit.GetComponent<NetworkObject>();
+        networkObject.Spawn();  // Spawn bullet across the network
+    }
+
+    [ServerRpc]
+    private void DestroyTrailServerRpc()
+    {
+        NetworkObject trailNetworkObject = bulletTrail.GetComponent<NetworkObject>();
+        trailNetworkObject.Despawn();  // Spawn bullet across the network
+        Destroy(bulletTrail.gameObject, bulletTrail.time);
+    }
+    [ServerRpc]
+    private void DestroyBulletImpactServerRpc()
+    {
+        NetworkObject impactNetworkObject = bulletHit.GetComponent<NetworkObject>();
+        impactNetworkObject.Despawn();  // Spawn bullet across the network
+        Destroy(bulletHit.gameObject);
+    }
+    IEnumerator DespawnBulletImpact()
+    {
+        yield return new WaitForSeconds(guns.types[currentBulletIndex].fireRate);
+        DestroyBulletImpactServerRpc();
+    }
 }
