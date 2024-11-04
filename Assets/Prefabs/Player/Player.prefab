@@ -668,7 +668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1574987092
+  GlobalObjectIdHash: 3363062216
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -701,9 +701,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
-  mainCamera: {fileID: 4420681178239266506, guid: b3d22653d4645d549a9d09af9121af59, type: 3}
+  mainCameraPrefab: {fileID: 4420681178239266506, guid: b3d22653d4645d549a9d09af9121af59, type: 3}
   cameraOffset: {fileID: 3374343161975933053}
-  fpsCamera: {fileID: 5508776495904927901, guid: 4a776612adf228c4fb03ee16f070ebf1, type: 3}
+  fpsCameraPrefab: {fileID: 5508776495904927901, guid: 4a776612adf228c4fb03ee16f070ebf1, type: 3}
   playerVisual: {fileID: 5511598634483475248}
   vCamera: {fileID: 3327718317794579990}
   gunManager: {fileID: 7066320579612728984}

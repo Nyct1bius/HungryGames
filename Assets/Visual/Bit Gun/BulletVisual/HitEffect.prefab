@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 963122780295804557}
   - component: {fileID: 3060988416104881501}
   - component: {fileID: 7484385750459133707}
+  - component: {fileID: 5205259526930561897}
   m_Layer: 0
   m_Name: HitEffect
   m_TagString: Untagged
@@ -4844,7 +4845,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4215482120
+  GlobalObjectIdHash: 2442254481
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -4882,3 +4883,15 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
+--- !u!114 &5205259526930561897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8032299949357985797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f99578fd5e66ae64db3699f97ab7d4be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

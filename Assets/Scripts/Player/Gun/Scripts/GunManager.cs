@@ -21,6 +21,7 @@ public class GunManager : NetworkBehaviour
     RaycastHit spawnBulletHit;
     TrailRenderer bulletTrail;
     ParticleSystem bulletHit;
+
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -103,7 +104,6 @@ public class GunManager : NetworkBehaviour
         spawnBulletHit = hit;
         SpawnBulletImpactServerRpc();
         DestroyTrailServerRpc();
-        StartCoroutine(DespawnBulletImpact());
     }
     IEnumerator FireRateDelay(float delay)
     {
@@ -139,17 +139,5 @@ public class GunManager : NetworkBehaviour
         NetworkObject trailNetworkObject = bulletTrail.GetComponent<NetworkObject>();
         trailNetworkObject.Despawn();  // Spawn bullet across the network
         Destroy(bulletTrail.gameObject, bulletTrail.time);
-    }
-    [ServerRpc]
-    private void DestroyBulletImpactServerRpc()
-    {
-        NetworkObject impactNetworkObject = bulletHit.GetComponent<NetworkObject>();
-        impactNetworkObject.Despawn();  // Spawn bullet across the network
-        Destroy(bulletHit.gameObject);
-    }
-    IEnumerator DespawnBulletImpact()
-    {
-        yield return new WaitForSeconds(guns.types[currentBulletIndex].fireRate);
-        DestroyBulletImpactServerRpc();
     }
 }

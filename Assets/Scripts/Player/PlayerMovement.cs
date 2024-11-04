@@ -13,14 +13,15 @@ public class PlayerMovement : NetworkBehaviour
 
 
     [Header("Camera variables")]
-    [SerializeField] private GameObject mainCamera;
+    [SerializeField] private GameObject mainCameraPrefab;
     [SerializeField] private Transform cameraOffset;
-    [SerializeField] private GameObject fpsCamera;
+    [SerializeField] private GameObject fpsCameraPrefab;
     [SerializeField] private Transform playerVisual;
     [SerializeField] private CinemachineVirtualCamera vCamera;
     [SerializeField] private GunManager gunManager;
     [Range(0, 10)]
     [SerializeField] private float sensibility;
+    private AudioListener listerner;
     //Components
     InputManager inputManager;
     Rigidbody rb;
@@ -39,15 +40,23 @@ public class PlayerMovement : NetworkBehaviour
 
     [Header("Crosshair variables")]
     [SerializeField] private RectTransform crosshair;
+
+    public override void OnNetworkSpawn()
+    {
+        if (IsOwner)
+        {
+            SetupCameraVariablesIsOwener();
+        }
+        else
+        {
+            SetupCameraVariablesIsntOwener();
+        }
+       
+    }
     private void Awake()
     {
         inputManager = GetComponent<InputManager>();
         rb = GetComponent<Rigidbody>();
-        mainCameraRef = Instantiate(mainCamera);
-        fpsCameraRef = Instantiate(fpsCamera, cameraOffset.position, Quaternion.identity);
-        PlayerCameraManager cameraManager = fpsCameraRef.GetComponent<PlayerCameraManager>();
-        cameraManager.SetupCameraVariables(this.gameObject, playerVisual, inputManager, sensibility, crosshair,gunManager, vCamera);
-
     }
     private void Start()
     {
@@ -135,5 +144,30 @@ public class PlayerMovement : NetworkBehaviour
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(groundCheck.position, detectionSphereRadius);
+    }
+
+    private void SetupCameraVariablesIsOwener()
+    {
+        mainCameraRef = Instantiate(mainCameraPrefab);
+        listerner = mainCameraRef.GetComponent<AudioListener>();
+        listerner.enabled = true;
+        fpsCameraRef = Instantiate(fpsCameraPrefab, cameraOffset.position, Quaternion.identity);
+        vCamera.Priority = 1;
+        PlayerCameraManager cameraManager = fpsCameraRef.GetComponent<PlayerCameraManager>();
+        cameraManager.SetupCameraVariables(this.gameObject, playerVisual, inputManager, sensibility, crosshair, gunManager, vCamera);
+        SpawnCamerasServerRpc();
+    }
+    private void SetupCameraVariablesIsntOwener()
+    {
+        vCamera.Priority = 0;
+    }
+
+    [ServerRpc]
+    private void SpawnCamerasServerRpc()
+    {
+        NetworkObject nObjectCam1 = fpsCameraRef.GetComponent<NetworkObject>();
+        nObjectCam1.Spawn();
+        NetworkObject nObjectCam2 = mainCameraRef.GetComponent<NetworkObject>();
+        nObjectCam2.Spawn();
     }
 }
