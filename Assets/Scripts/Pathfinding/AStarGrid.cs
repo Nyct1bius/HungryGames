@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class AStarGrid : MonoBehaviour
@@ -36,15 +37,41 @@ public class AStarGrid : MonoBehaviour
 
                 bool walkable = !(Physics.CheckSphere(worldPoint, UnitRadius, ObstacleMask));
 
-                grid[x, y] = new GridUnit(walkable, worldPoint);
+                grid[x, y] = new GridUnit(walkable, worldPoint, x, y);
             }
         }
+    }
+
+    public List<GridUnit> GetNeighbours(GridUnit unit)
+    {
+        List<GridUnit> neighbous = new List<GridUnit>();    
+
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                if (x == 0 && y == 0)
+                {
+                    continue;
+                }
+
+                int checkX = unit.GridX + x;
+                int checkY = unit.GridY + y;
+
+                if (checkX >= 0 && checkY < gridSizeX && checkY >= 0 && checkY < gridSizeY)
+                {
+                    neighbous.Add(grid[checkX, checkY]);
+                }
+            }   
+        }
+
+        return neighbous;
     }
 
     public GridUnit UnitFromWorldPoint(Vector3 worldPos)
     {
         float percentX = (worldPos.x + GridWorldSize.x / 2) / GridWorldSize.x;
-        float percentY = (worldPos.y + GridWorldSize.y / 2) / GridWorldSize.y;
+        float percentY = (worldPos.z + GridWorldSize.y / 2) / GridWorldSize.y;
 
         percentX = Mathf.Clamp01(percentX);
         percentX = Mathf.Clamp01(percentX);
@@ -61,10 +88,10 @@ public class AStarGrid : MonoBehaviour
 
         if (grid != null)
         {
-            foreach (GridUnit unit in grid)
+            foreach (GridUnit u in grid)
             {
-                Gizmos.color = (unit.IsObstacle) ? Color.white : Color.red;                
-                Gizmos.DrawCube(unit.WorldPos, Vector3.one * (unitDiameter - 0.1f));
+                Gizmos.color = (u.IsWalkable) ? Color.white : Color.red;
+                Gizmos.DrawCube(u.WorldPos, Vector3.one * (unitDiameter - 0.1f));
             }
         }
     }

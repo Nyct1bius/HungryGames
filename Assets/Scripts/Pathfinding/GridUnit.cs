@@ -4,12 +4,26 @@ using UnityEngine;
 
 public class GridUnit
 {
-    public bool IsObstacle;
+    public bool IsWalkable;
     public Vector3 WorldPos;
+    public int GridX, GridY;
 
-    public GridUnit(bool _isObstacle, Vector3 _worldPos)
+    public int GCost, HCost;
+
+    public GridUnit(bool _isWalkable, Vector3 _worldPos, int _gridX, int _gridY)
     {
-        IsObstacle = _isObstacle;
+        IsWalkable = _isWalkable;
         WorldPos = _worldPos;
+
+        GridX = _gridX;
+        GridY = _gridY;
+    }
+
+    public int FCost
+    {
+        get
+        {
+            return GCost + HCost;
+        }
     }
 }
