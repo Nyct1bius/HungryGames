@@ -26,6 +26,6 @@ public class InicioUI : MonoBehaviour
 
     public void Host()
     {
-        SceneManager.LoadScene("TesteM");
+        SceneManager.LoadScene("Load");
     }
 }

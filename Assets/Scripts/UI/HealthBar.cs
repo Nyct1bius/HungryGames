@@ -14,17 +14,25 @@ public class HealthBar : MonoBehaviour
         slider.maxValue = health;
         slider.value = health;
         targetHealth = health;
+        HealthAnim();
     }
 
     // Define o valor alvo da barra de vida
     public void SetHealth(float health)
     {
         targetHealth = health;
+        HealthAnim();
+    }
+
+    void HealthAnim()
+    {
+        // Interpola suavemente o valor atual até o valor alvo
+        slider.value = Mathf.Lerp(slider.value, targetHealth, smoothSpeed * Time.deltaTime);
     }
 
     void Update()
     {
         // Interpola suavemente o valor atual até o valor alvo
-        slider.value = Mathf.Lerp(slider.value, targetHealth, smoothSpeed * Time.deltaTime);
+       // slider.value = Mathf.Lerp(slider.value, targetHealth, smoothSpeed * Time.deltaTime);
     }
 }
