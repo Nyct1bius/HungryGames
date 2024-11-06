@@ -25,8 +25,7 @@ public class PlayerCameraManager : NetworkBehaviour
     }
     private void Update()
     {
-        if(IsOwner)
-        {
+     
             transform.position = new Vector3(_playerRef.transform.position.x, _playerRef.transform.position.y + 0.7f, _playerRef.transform.position.z);
             Vector2 mousePos = _inputManager.GetMouseDelta();
             float mouseX = mousePos.x * Time.deltaTime * _sensibility;
@@ -40,7 +39,7 @@ public class PlayerCameraManager : NetworkBehaviour
             //Rotate Camera and orietation
             transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
             _playerVisual.Rotate(Vector3.up * mouseX);
-        }  
+       
     }
 
     public void SetupCameraVariables(GameObject playerRef, Transform playerVisual, InputManager inputManager, float sensibility, 

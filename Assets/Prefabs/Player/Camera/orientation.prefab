@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7528358565918662240}
-  - component: {fileID: 6567998479165886448}
   - component: {fileID: 1411401692647688179}
+  - component: {fileID: 6567998479165886448}
   - component: {fileID: 4262733488808075017}
   m_Layer: 0
   m_Name: orientation
@@ -34,18 +34,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6567998479165886448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5508776495904927901}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48f652145ead61d4880b2dc42bb72016, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1411401692647688179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3836971310
+  GlobalObjectIdHash: 2762060817
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -66,6 +54,18 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &6567998479165886448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5508776495904927901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48f652145ead61d4880b2dc42bb72016, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4262733488808075017
 MonoBehaviour:
   m_ObjectHideFlags: 0

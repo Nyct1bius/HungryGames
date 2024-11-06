@@ -45,11 +45,11 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (IsOwner)
         {
-            SetupCameraVariablesIsOwener();
+            SetupCameraVariablesIsOwner();
         }
         else
         {
-            SetupCameraVariablesIsntOwener();
+            vCamera.Priority = 0;
         }
        
     }
@@ -146,20 +146,24 @@ public class PlayerMovement : NetworkBehaviour
         Gizmos.DrawWireSphere(groundCheck.position, detectionSphereRadius);
     }
 
-    private void SetupCameraVariablesIsOwener()
+    private void SetupCameraVariablesIsOwner()
     {
         mainCameraRef = Instantiate(mainCameraPrefab);
         listerner = mainCameraRef.GetComponent<AudioListener>();
         listerner.enabled = true;
         fpsCameraRef = Instantiate(fpsCameraPrefab, cameraOffset.position, Quaternion.identity);
-        vCamera.Priority = 1;
+        vCamera.Priority = 10;
         PlayerCameraManager cameraManager = fpsCameraRef.GetComponent<PlayerCameraManager>();
         cameraManager.SetupCameraVariables(this.gameObject, playerVisual, inputManager, sensibility, crosshair, gunManager, vCamera);
         SpawnCamerasServerRpc();
-    }
-    private void SetupCameraVariablesIsntOwener()
-    {
-        vCamera.Priority = 0;
+        GameObject[] cameras = GameObject.FindGameObjectsWithTag("MainCamera");
+        foreach (GameObject camera in cameras)
+        {
+            if (camera != mainCameraRef)
+            {
+                camera.SetActive(false);
+            }
+        }
     }
 
     [ServerRpc]
