@@ -10,24 +10,24 @@ public class HealthBar : NetworkBehaviour
     public float smoothSpeed = 5f; // Velocidade da animação, ajustável no Inspector
     private float targetHealth; // Armazena o valor de destino da barra de vida
 
-    [ServerRpc]
-    public void SetMaxHealthServerRpc(float health)
+    [ClientRpc]
+    public void SetMaxHealthClientRpc(float health)
     {
         slider.maxValue = health;
         slider.value = health;
         targetHealth = health;
-        HealthAnimServerRpc();
+        HealthAnimClientRpc();
     }
 
     // Define o valor alvo da barra de vida
-    [ServerRpc]
-    public void SetHealthServerRpc(float health)
+    [ClientRpc]
+    public void SetHealthClientRpc(float health)
     {
         targetHealth = health;
-        HealthAnimServerRpc();
+        HealthAnimClientRpc();
     }
-    [ServerRpc]
-    void HealthAnimServerRpc()
+    [ClientRpc]
+    void HealthAnimClientRpc()
     {
         // Interpola suavemente o valor atual até o valor alvo
         slider.value = Mathf.Lerp(slider.value, targetHealth, smoothSpeed * Time.deltaTime);

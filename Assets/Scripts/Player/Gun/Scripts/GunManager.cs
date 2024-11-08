@@ -15,7 +15,6 @@ public class GunManager : NetworkBehaviour
     public int currentBulletIndex;
 
     private Animator anim;
-    private float lastShootTime;
     private InputManager _inputManager;
     Ray mouseWorldPos;
     RaycastHit spawnBulletHit;
@@ -45,7 +44,6 @@ public class GunManager : NetworkBehaviour
  
     private void Shoot()
     {
-        if (!IsOwner) return;
         mouseWorldPos = Camera.main.ScreenPointToRay(crosshair.position);
         if (canShoot && currentAmmo >= 0)
         {
@@ -103,7 +101,7 @@ public class GunManager : NetworkBehaviour
         trail.transform.position = hit.point;
         spawnBulletHit = hit;
         SpawnBulletImpactServerRpc();
-        DealsDamageServerRpc();
+        DealsDamageClientRpc();
         DestroyTrailServerRpc();
     }
     IEnumerator FireRateDelay(float delay)
@@ -111,8 +109,8 @@ public class GunManager : NetworkBehaviour
         yield return new WaitForSeconds(delay);
         canShoot = true;
     }
-    [ServerRpc]
-    private void DealsDamageServerRpc()
+    [ClientRpc]
+    private void DealsDamageClientRpc()
     {
         PlayerStatsManager stats = target.GetComponent<PlayerStatsManager>();
         if (stats != null && target != NetworkManager.LocalClient.PlayerObject)
@@ -130,6 +128,7 @@ public class GunManager : NetworkBehaviour
             networkObject.Spawn();  // Spawn bullet across the network
             StartCoroutine(SpawnTrail(bulletTrail, hit));
             target = hit.collider.gameObject;
+            Debug.Log(target);
             
         }
         
