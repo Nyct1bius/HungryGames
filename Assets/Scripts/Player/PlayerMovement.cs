@@ -49,7 +49,7 @@ public class PlayerMovement : NetworkBehaviour
         }
         else
         {
-            vCamera.Priority = 0;
+            vCamera.Priority = -10;
         }
        
     }

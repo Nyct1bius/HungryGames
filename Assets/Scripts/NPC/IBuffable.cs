@@ -8,5 +8,5 @@ public interface IBuffable
 
     void Debuff(float damageMultiplierDebuff, float speedMultiplierDebuff, float armorDebuff);
 
-    void Damage(float damage);
+    void Damage(int damage);
 }

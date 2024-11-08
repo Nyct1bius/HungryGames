@@ -11,8 +11,7 @@ public class PlayerCameraManager : NetworkBehaviour
     private Transform _playerVisual;
 
     private GunManager _gunManager;
-    private CinemachineVirtualCamera fpsCamera;
- 
+    private bool canFollowPlayer;
 
     private InputManager _inputManager;
     private float xRotation;
@@ -25,7 +24,7 @@ public class PlayerCameraManager : NetworkBehaviour
     }
     private void Update()
     {
-     
+
             transform.position = new Vector3(_playerRef.transform.position.x, _playerRef.transform.position.y + 0.7f, _playerRef.transform.position.z);
             Vector2 mousePos = _inputManager.GetMouseDelta();
             float mouseX = mousePos.x * Time.deltaTime * _sensibility;
@@ -45,6 +44,7 @@ public class PlayerCameraManager : NetworkBehaviour
     public void SetupCameraVariables(GameObject playerRef, Transform playerVisual, InputManager inputManager, float sensibility, 
                                      RectTransform crosshair, GunManager gunManager, CinemachineVirtualCamera vCamera)
     {
+        if (!IsOwner) return;
         _playerRef = playerRef;
         _playerVisual = playerVisual;
         _inputManager = inputManager;
