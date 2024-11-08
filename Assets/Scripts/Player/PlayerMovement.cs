@@ -151,7 +151,7 @@ public class PlayerMovement : NetworkBehaviour
         mainCameraRef = Instantiate(mainCameraPrefab);
         listerner = mainCameraRef.GetComponent<AudioListener>();
         listerner.enabled = true;
-        fpsCameraRef = Instantiate(fpsCameraPrefab, cameraOffset.position, Quaternion.identity);
+        fpsCameraRef = Instantiate(fpsCameraPrefab, playerVisual.position, Quaternion.identity);
         vCamera.Priority = 10;
         PlayerCameraManager cameraManager = fpsCameraRef.GetComponent<PlayerCameraManager>();
         cameraManager.SetupCameraVariables(this.gameObject, playerVisual, inputManager, sensibility, crosshair, gunManager, vCamera);

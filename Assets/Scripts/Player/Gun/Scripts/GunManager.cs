@@ -24,7 +24,7 @@ public class GunManager : NetworkBehaviour
     private GameObject target;
     private void Awake()
     {
-        anim = GetComponent<Animator>();
+       // anim = GetComponent<Animator>();
         currentBulletIndex = 0;
     }
     private void Start()
