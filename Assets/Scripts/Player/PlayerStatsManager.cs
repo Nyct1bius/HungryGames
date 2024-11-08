@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class PlayerStatsManager : NetworkBehaviour,IBuffable
 {
-    [SerializeField] private HealthBar healthBar;
-    [SerializeField] private int maxHealth;
-    [SerializeField] private int maxSpeed;
+    [SerializeField] public HealthBar healthBar;
+    [SerializeField] public int maxHealth;
+    [SerializeField] public int maxSpeed;
     private int currentHealth;
 
     public void Buff(float damageMultiplierBuff, float speedMultiplierBuff, float armorBuff)
@@ -18,7 +18,8 @@ public class PlayerStatsManager : NetworkBehaviour,IBuffable
     public void Damage(int damage)
     {
         currentHealth -= damage;
-        healthBar.SetHealth(currentHealth);
+        healthBar.SetHealthServerRpc(currentHealth);
+        Debug.Log(currentHealth);
     }
 
     public void Debuff(float damageMultiplierDebuff, float speedMultiplierDebuff, float armorDebuff)
@@ -32,7 +33,7 @@ public class PlayerStatsManager : NetworkBehaviour,IBuffable
         if(IsOwner)
         {
             currentHealth = maxHealth;
-            healthBar.SetMaxHealth(currentHealth);
+            healthBar.SetMaxHealthServerRpc(currentHealth);
         }
         else
         {

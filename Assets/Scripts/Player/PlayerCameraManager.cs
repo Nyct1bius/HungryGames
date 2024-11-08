@@ -4,14 +4,13 @@ using UnityEngine;
 using Cinemachine;
 using Unity.Netcode;
 
-public class PlayerCameraManager : NetworkBehaviour
+public class PlayerCameraManager : MonoBehaviour
 {
     private float _sensibility;
     private GameObject _playerRef;
     private Transform _playerVisual;
 
     private GunManager _gunManager;
-    private bool canFollowPlayer;
 
     private InputManager _inputManager;
     private float xRotation;
@@ -24,27 +23,25 @@ public class PlayerCameraManager : NetworkBehaviour
     }
     private void Update()
     {
+        transform.position = new Vector3(_playerRef.transform.position.x , _playerRef.transform.position.y + 0.7f , _playerRef.transform.position.z);
+        Vector2 mousePos = _inputManager.GetMouseDelta();
+        float mouseX = mousePos.x * Time.deltaTime * _sensibility;
+        float mouseY = mousePos.y * Time.deltaTime * _sensibility;
 
-            transform.position = new Vector3(_playerRef.transform.position.x, _playerRef.transform.position.y + 0.7f, _playerRef.transform.position.z);
-            Vector2 mousePos = _inputManager.GetMouseDelta();
-            float mouseX = mousePos.x * Time.deltaTime * _sensibility;
-            float mouseY = mousePos.y * Time.deltaTime * _sensibility;
+        yRotation += mouseX;
+        xRotation -= mouseY;
 
-            yRotation += mouseX;
-            xRotation -= mouseY;
+        xRotation = Mathf.Clamp(xRotation, -75, 75);
 
-            xRotation = Mathf.Clamp(xRotation, -75, 75);
+        //Rotate Camera and orietation
+        transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+        _playerVisual.Rotate(Vector3.up * mouseX);
 
-            //Rotate Camera and orietation
-            transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
-            _playerVisual.Rotate(Vector3.up * mouseX);
-       
     }
 
     public void SetupCameraVariables(GameObject playerRef, Transform playerVisual, InputManager inputManager, float sensibility, 
                                      RectTransform crosshair, GunManager gunManager, CinemachineVirtualCamera vCamera)
     {
-        if (!IsOwner) return;
         _playerRef = playerRef;
         _playerVisual = playerVisual;
         _inputManager = inputManager;
@@ -54,5 +51,4 @@ public class PlayerCameraManager : NetworkBehaviour
         vCamera.LookAt = transform;
         _gunManager.SetupVariables(inputManager, crosshair);
     }
-
 }

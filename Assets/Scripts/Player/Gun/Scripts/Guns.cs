@@ -19,6 +19,7 @@ public class GunTypes
     public Vector3 bulletSpreadVariance = new Vector3(0.1f, 0.1f, 0.1f);
     public float fireRate = 0.5f;
     public float maxDistance = 300f;
+    public int damage;
 
     [Header("Effects")]
     public ParticleSystem shootingSystem;

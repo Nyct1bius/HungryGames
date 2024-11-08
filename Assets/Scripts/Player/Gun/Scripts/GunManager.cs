@@ -21,7 +21,7 @@ public class GunManager : NetworkBehaviour
     RaycastHit spawnBulletHit;
     TrailRenderer bulletTrail;
     ParticleSystem bulletHit;
-
+    private GameObject target;
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -52,7 +52,7 @@ public class GunManager : NetworkBehaviour
             Debug.Log(currentAmmo);
             currentAmmo--;
             canShoot = false;
-            guns.types[currentBulletIndex].shootingSystem.Play();
+            //guns.types[currentBulletIndex].shootingSystem.Play();
             SpawnTrailServerRpc();
             StartCoroutine(FireRateDelay(guns.types[currentBulletIndex].fireRate));
         }
@@ -103,6 +103,7 @@ public class GunManager : NetworkBehaviour
         trail.transform.position = hit.point;
         spawnBulletHit = hit;
         SpawnBulletImpactServerRpc();
+        DealsDamageServerRpc();
         DestroyTrailServerRpc();
     }
     IEnumerator FireRateDelay(float delay)
@@ -110,7 +111,15 @@ public class GunManager : NetworkBehaviour
         yield return new WaitForSeconds(delay);
         canShoot = true;
     }
-
+    [ServerRpc]
+    private void DealsDamageServerRpc()
+    {
+        PlayerStatsManager stats = target.GetComponent<PlayerStatsManager>();
+        if (stats != null && target != NetworkManager.LocalClient.PlayerObject)
+        {
+            stats.Damage(guns.types[currentBulletIndex].damage);
+        }
+    }
     [ServerRpc]
     private void SpawnTrailServerRpc()
     {
@@ -120,6 +129,8 @@ public class GunManager : NetworkBehaviour
             NetworkObject networkObject = bulletTrail.GetComponent<NetworkObject>();
             networkObject.Spawn();  // Spawn bullet across the network
             StartCoroutine(SpawnTrail(bulletTrail, hit));
+            target = hit.collider.gameObject;
+            
         }
         
 
