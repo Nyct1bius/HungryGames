@@ -21,16 +21,11 @@ public class GunManager : NetworkBehaviour
     TrailRenderer bulletTrail;
     ParticleSystem bulletHit;
     private GameObject target;
-    private void Awake()
+    public override void OnNetworkSpawn()
     {
-       // anim = GetComponent<Animator>();
         currentBulletIndex = 0;
-    }
-    private void Start()
-    {
         currentAmmo = guns.types[currentBulletIndex].maxAmmo;
     }
-
     public void SetupVariables(InputManager inputManager, RectTransform crosshair)
     {
         _inputManager = inputManager;
@@ -41,25 +36,28 @@ public class GunManager : NetworkBehaviour
     {
         _inputManager.OnShoot -= Shoot;
     }
- 
+
     private void Shoot()
     {
+        if(!IsOwner) return;
         mouseWorldPos = Camera.main.ScreenPointToRay(crosshair.position);
-        if (canShoot && currentAmmo >= 0)
+        CheckMag();
+        if (canShoot && currentAmmo > 0)
         {
-            Debug.Log(currentAmmo);
             currentAmmo--;
+            Debug.Log(currentAmmo);
             canShoot = false;
             //guns.types[currentBulletIndex].shootingSystem.Play();
             SpawnTrailServerRpc();
+
             StartCoroutine(FireRateDelay(guns.types[currentBulletIndex].fireRate));
         }
-     
-        CheckMag();
+
+        
     }
     private void CheckMag()
     {
-        if(currentAmmo <= 0)
+        if (currentAmmo == 0)
         {
             StartCoroutine(Reload(guns.types[currentBulletIndex].reloadTime));
         }
@@ -91,17 +89,17 @@ public class GunManager : NetworkBehaviour
         float time = 0;
         Vector3 startPosition = trail.transform.position;
 
-        while(time < 0.3)
+        while (time < 0.3)
         {
-            trail.transform.position = Vector3.Lerp(startPosition,hit.point,time);
-            time += Time.deltaTime/ trail.time;
+            trail.transform.position = Vector3.Lerp(startPosition, hit.point, time);
+            time += Time.deltaTime / trail.time;
             yield return null;
         }
-      
+
         trail.transform.position = hit.point;
         spawnBulletHit = hit;
         SpawnBulletImpactServerRpc();
-        DealsDamageClientRpc();
+        DealsDamageServerRpc();
         DestroyTrailServerRpc();
     }
     IEnumerator FireRateDelay(float delay)
@@ -109,8 +107,10 @@ public class GunManager : NetworkBehaviour
         yield return new WaitForSeconds(delay);
         canShoot = true;
     }
-    [ClientRpc]
-    private void DealsDamageClientRpc()
+
+    #region ClientCalls
+    [ServerRpc]
+    private void DealsDamageServerRpc()
     {
         PlayerStatsManager stats = target.GetComponent<PlayerStatsManager>();
         if (stats != null && target != NetworkManager.LocalClient.PlayerObject)
@@ -118,36 +118,34 @@ public class GunManager : NetworkBehaviour
             stats.Damage(guns.types[currentBulletIndex].damage);
         }
     }
+
     [ServerRpc]
     private void SpawnTrailServerRpc()
     {
         if (Physics.Raycast(mouseWorldPos, out RaycastHit hit, float.MaxValue, mask))
         {
             bulletTrail = Instantiate(guns.types[currentBulletIndex].bulletTrail, bulletSpawnPoint.position, Quaternion.identity);
-            NetworkObject networkObject = bulletTrail.GetComponent<NetworkObject>();
-            networkObject.Spawn();  // Spawn bullet across the network
+            bulletTrail.GetComponent<NetworkObject>().Spawn(true);
             StartCoroutine(SpawnTrail(bulletTrail, hit));
             target = hit.collider.gameObject;
             Debug.Log(target);
-            
-        }
-        
 
+        }
     }
-    
+
     [ServerRpc]
     private void SpawnBulletImpactServerRpc()
     {
         bulletHit = Instantiate(guns.types[currentBulletIndex].ImpactParticleSystem, spawnBulletHit.point, Quaternion.LookRotation(spawnBulletHit.normal));
-        NetworkObject networkObject = bulletHit.GetComponent<NetworkObject>();
-        networkObject.Spawn();  // Spawn bullet across the network
+        bulletHit.GetComponent<NetworkObject>().Spawn(true);
     }
+
 
     [ServerRpc]
     private void DestroyTrailServerRpc()
     {
-        NetworkObject trailNetworkObject = bulletTrail.GetComponent<NetworkObject>();
-        trailNetworkObject.Despawn();  // Spawn bullet across the network
+        bulletTrail.GetComponent<NetworkObject>().Despawn();
         Destroy(bulletTrail.gameObject, bulletTrail.time);
     }
+    #endregion
 }

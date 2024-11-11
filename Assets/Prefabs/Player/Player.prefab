@@ -2278,7 +2278,7 @@ MonoBehaviour:
   bulletSpawnPoint: {fileID: 2609978028132849748}
   mask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 247
   guns: {fileID: 11400000, guid: 3c3e09598f88a7347836d7f1ac648a64, type: 2}
   currentBulletIndex: 0
 --- !u!114 &454769172085162978
@@ -3134,6 +3134,9 @@ MonoBehaviour:
   healthBar: {fileID: 2717158976676743699}
   maxHealth: 100
   maxSpeed: 0
+  playerLocalLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &422153264897805532
 MonoBehaviour:
   m_ObjectHideFlags: 0

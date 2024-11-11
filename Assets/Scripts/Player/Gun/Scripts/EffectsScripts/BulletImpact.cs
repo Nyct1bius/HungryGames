@@ -14,11 +14,11 @@ public class BulletImpact : NetworkBehaviour
     IEnumerator DespawnBulletImpact(float waitTime)
     {
         yield return new WaitForSeconds(waitTime); 
-        DestroyBulletImpactClientRpc();
+        DestroyBulletImpactServerRpc();
     }
 
-    [ClientRpc]
-    private void DestroyBulletImpactClientRpc()
+    [ServerRpc(RequireOwnership = false)]
+    private void DestroyBulletImpactServerRpc()
     {
         NetworkObject impactNetworkObject = gameObject.GetComponent<NetworkObject>();
         impactNetworkObject.Despawn();  // Spawn bullet across the network

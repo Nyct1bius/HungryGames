@@ -1,23 +1,47 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class MatchManager : MonoBehaviour
+public class MatchManager : NetworkBehaviour
 {
-    [SerializeField] private PlayerDatabase playersDatabase;
-    private PlayerStats player1, player2;
-
+    public static MatchManager localInstance;
+    [SerializeField] private Transform[] spawnPoints;
+    private int index;
+    private Transform currentPlayer;
     private void Start()
     {
-        player1 = playersDatabase._players[0];
-        player2 = playersDatabase._players[1];
+        localInstance = this;
     }
-    public GameObject GetLosingPlayer()
+    public void PlayerToSpawnLocation(Transform player)
     {
-        if(player1.score > player2.score)
+        if (!IsOwner) return;
+            currentPlayer = player;
+        if (index < spawnPoints.Length)
         {
-            return player1.playerHolder;
+            MovePlayerToSpawnServerRpc();
+            index++;
         }
-        return player2.playerHolder;
+        else
+        {
+            index = 0;
+            MovePlayerToSpawnServerRpc();
+            index++;
+        }
+
+    }
+    [ServerRpc(RequireOwnership = false)]
+    private void MovePlayerToSpawnServerRpc()
+    {
+       
+        MovePlayerToSpawnClientRpc();
+    }
+    [ClientRpc]
+    private void MovePlayerToSpawnClientRpc()
+    {
+
+        currentPlayer.position = spawnPoints[index].position;
     }
 }

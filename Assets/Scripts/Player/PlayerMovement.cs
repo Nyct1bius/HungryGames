@@ -51,15 +51,12 @@ public class PlayerMovement : NetworkBehaviour
         {
             vCamera.Priority = 0;
         }
-       
+        
     }
     private void Awake()
     {
         inputManager = GetComponent<InputManager>();
         rb = GetComponent<Rigidbody>();
-    }
-    private void Start()
-    {
         currentSpeed = speed;
     }
     private void OnEnable()
@@ -155,7 +152,7 @@ public class PlayerMovement : NetworkBehaviour
         vCamera.Priority = 10;
         PlayerCameraManager cameraManager = fpsCameraRef.GetComponent<PlayerCameraManager>();
         cameraManager.SetupCameraVariables(this.gameObject, playerVisual, inputManager, sensibility, crosshair, gunManager, vCamera);
-        SpawnCamerasClientRpc();
+        SpawnCamerasServerRpc();
         GameObject[] cameras = GameObject.FindGameObjectsWithTag("MainCamera");
         foreach (GameObject camera in cameras)
         {
@@ -166,8 +163,8 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
-    [ClientRpc]
-    private void SpawnCamerasClientRpc()
+    [ServerRpc]
+    private void SpawnCamerasServerRpc()
     {
         NetworkObject nObjectCam2 = mainCameraRef.GetComponent<NetworkObject>();
         nObjectCam2.Spawn();
