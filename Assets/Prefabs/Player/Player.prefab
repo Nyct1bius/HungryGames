@@ -2280,6 +2280,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 247
   guns: {fileID: 11400000, guid: 3c3e09598f88a7347836d7f1ac648a64, type: 2}
+  trail: {fileID: 3696184956196490123, guid: 3e2403d86ed0f754f85eac752c7c50eb, type: 3}
   currentBulletIndex: 0
 --- !u!114 &454769172085162978
 MonoBehaviour:
