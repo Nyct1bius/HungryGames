@@ -10,6 +10,8 @@ public class GridUnit
 
     public int GCost, HCost;
 
+    public GridUnit Parent;
+
     public GridUnit(bool _isWalkable, Vector3 _worldPos, int _gridX, int _gridY)
     {
         IsWalkable = _isWalkable;

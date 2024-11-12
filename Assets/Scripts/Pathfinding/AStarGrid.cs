@@ -11,7 +11,7 @@ public class AStarGrid : MonoBehaviour
     GridUnit[,] grid;
 
     float unitDiameter;
-    int gridSizeX, gridSizeY;
+    int gridSizeX, gridSizeY, gridSizeZ;
 
     private void Start()
     {
@@ -82,6 +82,8 @@ public class AStarGrid : MonoBehaviour
         return grid[x, y];
     }
 
+    public List<GridUnit> path;
+
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(GridWorldSize.x, 1, GridWorldSize.y));
@@ -91,6 +93,13 @@ public class AStarGrid : MonoBehaviour
             foreach (GridUnit u in grid)
             {
                 Gizmos.color = (u.IsWalkable) ? Color.white : Color.red;
+                if (path != null)
+                {
+                    if (path.Contains(u))
+                    {
+                        Gizmos.color = Color.black;
+                    }
+                }
                 Gizmos.DrawCube(u.WorldPos, Vector3.one * (unitDiameter - 0.1f));
             }
         }
