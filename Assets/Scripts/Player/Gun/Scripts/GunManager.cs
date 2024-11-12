@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -33,6 +34,11 @@ public class GunManager : NetworkBehaviour
         this.crosshair = crosshair;
         _inputManager.OnShoot += Shoot;
     }
+    private void Update()
+    {
+        if (!IsOwner) return;
+        Debug.DrawLine(mouseWorldPos.origin, spawnBulletHit.point, Color.green);
+    }
     private void OnDisable()
     {
         _inputManager.OnShoot -= Shoot;
@@ -50,9 +56,10 @@ public class GunManager : NetworkBehaviour
             if (Physics.Raycast(mouseWorldPos, out RaycastHit hit, float.MaxValue, mask))
             {
                 bulletTrail = Instantiate(guns.types[currentBulletIndex].bulletTrail, bulletSpawnPoint.position, Quaternion.identity);
-                SpawnTrailServerRpc();
-                StartCoroutine(SpawnTrail(bulletTrail, hit));
+                SpawnTrailServerRpc(hit.point);
+                spawnBulletHit = hit;
                 target = hit.collider.gameObject;
+                StartCoroutine(SpawnTrail(bulletTrail, hit));
             }
             //guns.types[currentBulletIndex].shootingSystem.Play();
             Debug.Log(currentAmmo);
@@ -75,20 +82,19 @@ public class GunManager : NetworkBehaviour
         currentAmmo = guns.types[currentBulletIndex].maxAmmo;
     }
 
-    private IEnumerator SpawnTrail(TrailRenderer trail, RaycastHit hit)
+    private IEnumerator SpawnTrail(TrailRenderer trail, RaycastHit endPosition)
     {
         float time = 0;
         Vector3 startPosition = trail.transform.position;
-        while (time < 5)
+        while (time < 2)
         {
-            trail.transform.position = Vector3.Lerp(startPosition, hit.point, time);
+            trail.transform.position = Vector3.Lerp(startPosition, endPosition.point, time);
             time += Time.deltaTime / trail.time;
             yield return null;
         }
         if (IsOwner)
         {
-            trail.transform.position = hit.point;
-            bulletHit = Instantiate(guns.types[currentBulletIndex].ImpactParticleSystem, hit.point, Quaternion.LookRotation(hit.normal));
+            trail.transform.position = endPosition.point;
             SpawnBulletImpactServerRpc();
             DealsDamageServerRpc();
             DestroyTrailServerRpc(trail.time);
@@ -112,15 +118,15 @@ public class GunManager : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void SpawnTrailServerRpc()
+    private void SpawnTrailServerRpc(Vector3 pointToGo)
     {
         bulletTrail.GetComponent<NetworkObject>().Spawn();
-        Debug.Log(target);
     }
 
     [ServerRpc]
     private void SpawnBulletImpactServerRpc()
     {
+        bulletHit = Instantiate(guns.types[currentBulletIndex].ImpactParticleSystem, spawnBulletHit.point, Quaternion.LookRotation(spawnBulletHit.normal));
         bulletHit.GetComponent<NetworkObject>().Spawn();
     }
 
