@@ -9749,7 +9749,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1164208932}
   m_HandleRect: {fileID: 1164208931}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -13548,7 +13548,7 @@ MonoBehaviour:
     EnableNetworkLogs: 1
     OldPrefabList: []
   RunInBackground: 1
-  LogLevel: 0
+  LogLevel: 1
 --- !u!4 &1666545499
 Transform:
   m_ObjectHideFlags: 0

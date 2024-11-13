@@ -16,9 +16,9 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
 
         if (IsOwner)
         {
-            gameObject.layer = playerLocalLayer;
+           // gameObject.layer = playerLocalLayer;
             currentHealth = maxHealth;
-            healthBar.SetMaxHealthClientRpc(currentHealth);
+            healthBar.SetMaxHealthServerRpc(currentHealth);
         }
         else
         {
@@ -36,7 +36,7 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
     public void Damage(int damage)
     {
         currentHealth -= damage;
-        healthBar.SetHealthClientRpc(currentHealth);
+        healthBar.SetHealthServerRpc(currentHealth);
         Debug.Log(currentHealth);
     }
 
