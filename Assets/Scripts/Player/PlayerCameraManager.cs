@@ -23,7 +23,8 @@ public class PlayerCameraManager : MonoBehaviour
     }
     private void Update()
     {
-        transform.position = _playerVisual.position;
+        Vector3 cameraPosOffset = new Vector3(_playerVisual.position.x, _playerVisual.position.y + 3.5f, _playerVisual.position.z);
+        transform.position = cameraPosOffset;
         Vector2 mousePos = _inputManager.GetMouseDelta();
         float mouseX = mousePos.x * Time.deltaTime * _sensibility;
         float mouseY = mousePos.y * Time.deltaTime * _sensibility;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -15,8 +16,13 @@ public class PlayerVisual : NetworkBehaviour
     [SerializeField] private Material alternativeTorsoMat;
     [SerializeField] private Material alternativeLegMat;
 
+    [Header("Components")]
+    [SerializeField] private InputManager inputManager;
+    private Animator animator;
+
     public override void OnNetworkSpawn()
     {
+        animator = GetComponent<Animator>();
         if (IsOwner)
         {
             head.SetActive(false);
@@ -34,9 +40,38 @@ public class PlayerVisual : NetworkBehaviour
             headeRender.material = alternativeHeadMat;
         }
 
-
-
-
     }
+    private void OnEnable()
+    {
+        inputManager.OnWalk += Walk;
+        inputManager.OnStopWalk += StopWalk;
+        inputManager.OnRun += Run;
+        inputManager.OnStopRun += StopRun;
+    }
+    private void OnDisable()
+    {
+        inputManager.OnWalk -= Walk;
+        inputManager.OnStopWalk -= StopWalk;
+        inputManager.OnRun -= Run;
+        inputManager.OnStopRun -= StopRun;
+    }
+    private void Walk()
+    {
+        animator.SetBool("IsWalking", true);
+    }
+    private void StopWalk()
+    {
+        animator.SetBool("IsWalking", false);
+    }
+    private void Run()
+    {
+        animator.SetBool("IsRunning", true);
+    }
+
+    private void StopRun()
+    {
+        animator.SetBool("IsRunning", false);
+    }
+
 
 }

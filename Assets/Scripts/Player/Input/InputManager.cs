@@ -10,7 +10,7 @@ public class InputManager : NetworkBehaviour
 {
     PlayerInputAction playerInputActions;
 
-    public event Action OnJump,OnRun,OnStopRun, OnShoot; 
+    public event Action OnWalk,OnStopWalk, OnJump,OnRun,OnStopRun, OnShoot; 
     private void Awake()
     {
         playerInputActions = new PlayerInputAction();
@@ -18,6 +18,8 @@ public class InputManager : NetworkBehaviour
     private void OnEnable()
     {
         playerInputActions.Controls.Enable();
+        playerInputActions.Controls.Move.performed += PlayerMove;
+        playerInputActions.Controls.Move.canceled += PlayerStopMoving;
         playerInputActions.Controls.Jump.performed += PlayerJumped;
         playerInputActions.Controls.Run.performed += PlayerRun;
         playerInputActions.Controls.Run.canceled += PlayerStopRun;
@@ -26,6 +28,8 @@ public class InputManager : NetworkBehaviour
     private void OnDisable()
     {
         playerInputActions.Controls.Disable();
+        playerInputActions.Controls.Move.performed -= PlayerMove;
+        playerInputActions.Controls.Move.canceled -= PlayerMove;
         playerInputActions.Controls.Jump.performed -= PlayerJumped;
         playerInputActions.Controls.Run.performed -= PlayerRun;
         playerInputActions.Controls.Run.canceled -= PlayerStopRun;
@@ -42,6 +46,14 @@ public class InputManager : NetworkBehaviour
     public Vector2 GetMouseDelta()
     {
         return playerInputActions.Controls.MousePosition.ReadValue<Vector2>();
+    }
+    private void PlayerMove(InputAction.CallbackContext context)
+    {
+        OnWalk?.Invoke();
+    }  
+    private void PlayerStopMoving(InputAction.CallbackContext context)
+    {
+        OnStopWalk?.Invoke();
     }
 
     private void PlayerJumped(InputAction.CallbackContext context)
@@ -61,15 +73,5 @@ public class InputManager : NetworkBehaviour
         OnShoot?.Invoke();
     }
 
-    IEnumerator ShootLoop()
-    {
-        float inputValue = playerInputActions.Controls.Shoot.ReadValue<float>();
-        while (inputValue != 0)
-        {
-            OnShoot?.Invoke();
-            yield return new WaitForSeconds(0.01f);
-        }
-
-    }
 
 }
