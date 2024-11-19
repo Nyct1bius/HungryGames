@@ -10,7 +10,7 @@ public class InputManager : NetworkBehaviour
 {
     PlayerInputAction playerInputActions;
 
-    public event Action OnWalk,OnStopWalk, OnJump,OnRun,OnStopRun, OnShoot; 
+    public event Action OnWalk,OnStopWalk, OnJump,OnRun,OnStopRun, OnShoot,OnReload; 
     private void Awake()
     {
         playerInputActions = new PlayerInputAction();
@@ -24,6 +24,7 @@ public class InputManager : NetworkBehaviour
         playerInputActions.Controls.Run.performed += PlayerRun;
         playerInputActions.Controls.Run.canceled += PlayerStopRun;
         playerInputActions.Controls.Shoot.performed += PlayerShoot;
+        playerInputActions.Controls.Reload.performed += PlayerReload;
     }
     private void OnDisable()
     {
@@ -34,6 +35,7 @@ public class InputManager : NetworkBehaviour
         playerInputActions.Controls.Run.performed -= PlayerRun;
         playerInputActions.Controls.Run.canceled -= PlayerStopRun;
         playerInputActions.Controls.Shoot.performed -= PlayerShoot;
+        playerInputActions.Controls.Reload.performed -= PlayerReload;
     }
 
     public Vector2 GetNormalizedInputDirection()
@@ -50,7 +52,11 @@ public class InputManager : NetworkBehaviour
     private void PlayerMove(InputAction.CallbackContext context)
     {
         OnWalk?.Invoke();
-    }  
+    }
+    private void PlayerReload(InputAction.CallbackContext context)
+    {
+        OnReload?.Invoke();
+    }
     private void PlayerStopMoving(InputAction.CallbackContext context)
     {
         OnStopWalk?.Invoke();

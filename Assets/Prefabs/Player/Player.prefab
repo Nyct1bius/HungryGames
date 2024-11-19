@@ -2129,7 +2129,7 @@ GameObject:
   - component: {fileID: 912300598074796828}
   - component: {fileID: 454769172085162978}
   m_Layer: 9
-  m_Name: Gun
+  m_Name: GunModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2143,16 +2143,16 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3764389551295096228}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.000000019790605, y: -0.00000003441172, z: 2.6764674e-10, w: 1}
-  m_LocalPosition: {x: 0.313, y: -0.376, z: 1.47}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalRotation: {x: -0.56559837, y: 0.7741574, z: 0.023750588, w: 0.28322214}
+  m_LocalPosition: {x: 0.0005300005, y: -0.0018900207, z: 0.0027099967}
+  m_LocalScale: {x: 0.059999984, y: 0.059999973, z: 0.06000002}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7261509049389728452}
   - {fileID: 7313684166502222372}
   - {fileID: 2609978028132849748}
-  m_Father: {fileID: 1211573956715685341}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Father: {fileID: 836865072944782444}
+  m_LocalEulerAnglesHint: {x: -20.925, y: 153.85, z: -67.392}
 --- !u!33 &637760054251860155
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -2223,6 +2223,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   guns: {fileID: 11400000, guid: 3c3e09598f88a7347836d7f1ac648a64, type: 2}
+  playerAnimations: {fileID: 5404809578374238528}
   currentBulletIndex: 0
 --- !u!114 &454769172085162978
 MonoBehaviour:
@@ -2574,6 +2575,7 @@ Transform:
   m_Children:
   - {fileID: 6143207585320879480}
   - {fileID: 1695189268187488421}
+  - {fileID: 4572874317407371038}
   m_Father: {fileID: 2695750733321727273}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5120089678540620553
@@ -4461,7 +4463,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4572874317407371038}
   - {fileID: 500504264374651186}
   m_Father: {fileID: 5738283523507734469}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4943,6 +4944,7 @@ GameObject:
   - component: {fileID: 4719108218972594917}
   - component: {fileID: 6541396577967465517}
   - component: {fileID: 5404809578374238528}
+  - component: {fileID: 8351516709187762539}
   m_Layer: 0
   m_Name: Jasildo
   m_TagString: Untagged
@@ -5039,3 +5041,17 @@ MonoBehaviour:
   alternativeTorsoMat: {fileID: 3319122667529287076, guid: daeb793769516a94f958bd76f254e26a, type: 3}
   alternativeLegMat: {fileID: -5508551277811371556, guid: daeb793769516a94f958bd76f254e26a, type: 3}
   inputManager: {fileID: 3782179939153206032}
+--- !u!114 &8351516709187762539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9205093999630723383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dc9e45330215d74fb54596cb0d302ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 4719108218972594917}

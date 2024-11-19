@@ -32,7 +32,7 @@ public class MatchManager : NetworkBehaviour
         }
 
     }
-    [ServerRpc(RequireOwnership = false)]
+    [ServerRpc]
     private void MovePlayerToSpawnServerRpc()
     {
        

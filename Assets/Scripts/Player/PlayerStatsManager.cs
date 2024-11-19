@@ -16,7 +16,7 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
 
         if (IsOwner)
         {
-           // gameObject.layer = playerLocalLayer;
+            // gameObject.layer = playerLocalLayer;
             currentHealth = maxHealth;
             healthBar.SetMaxHealthServerRpc(currentHealth);
         }
@@ -30,16 +30,21 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
 
     public void Buff(float damageMultiplierBuff, float speedMultiplierBuff, float armorBuff)
     {
-       
+
     }
 
     public void Damage(int damage)
+    {
+        if (!IsOwner) return;
+        DamageServerRpc(damage);
+    }
+    [ServerRpc]
+    private void DamageServerRpc(int damage)
     {
         currentHealth -= damage;
         healthBar.SetHealthServerRpc(currentHealth);
         Debug.Log(currentHealth);
     }
-
     public void Debuff(float damageMultiplierDebuff, float speedMultiplierDebuff, float armorDebuff)
     {
         

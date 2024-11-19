@@ -16,7 +16,7 @@ public class HealthBar : NetworkBehaviour
         slider.maxValue = health;
         slider.value = health;
         targetHealth = health;
-        HealthAnimServerRpc();
+        HealthAnimClientRpc();
     }
 
     // Define o valor alvo da barra de vida
@@ -24,10 +24,10 @@ public class HealthBar : NetworkBehaviour
     public void SetHealthServerRpc(float health)
     {
         targetHealth = health;
-        HealthAnimServerRpc();
+        HealthAnimClientRpc();
     }
-    [ServerRpc]
-    void HealthAnimServerRpc()
+    [ClientRpc]
+    void HealthAnimClientRpc()
     {
         // Interpola suavemente o valor atual até o valor alvo
         slider.value = Mathf.Lerp(slider.value, targetHealth, smoothSpeed * Time.deltaTime);

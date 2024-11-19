@@ -12,9 +12,11 @@ public class GunManager : NetworkBehaviour
     [SerializeField] private LayerMask mask;
     [SerializeField] private LayerMask playerMask;
     [SerializeField] private Guns guns;
+    [SerializeField] private PlayerVisual playerAnimations;
     private bool canShoot = true;
     private int currentAmmo;
     private RectTransform crosshair;
+    private bool canReload;
     public int currentBulletIndex;
 
     private Animator anim;
@@ -34,6 +36,7 @@ public class GunManager : NetworkBehaviour
         _inputManager = inputManager;
         this.crosshair = crosshair;
         _inputManager.OnShoot += Shoot;
+        _inputManager.OnReload += CallReloadRoutine;
     }
     private void Update()
     {
@@ -43,22 +46,27 @@ public class GunManager : NetworkBehaviour
     private void OnDisable()
     {
         _inputManager.OnShoot -= Shoot;
+        _inputManager.OnShoot -= CallReloadRoutine;
     }
     #region Shoot Logic
     private void Shoot()
     {
         if (!IsOwner) return;
         mouseWorldPos = Camera.main.ScreenPointToRay(crosshair.position);
-        CheckMag();
         if (canShoot && currentAmmo > 0)
         {
             currentAmmo--;
             canShoot = false;
+            playerAnimations.PlayShootAnimation();
             if (Physics.Raycast(mouseWorldPos, out RaycastHit hit, float.MaxValue, mask))
             {
                 SpawnTrailServerRpc(hit.point);
                 SetupTarget(hit.collider.gameObject);
                 StartCoroutine(waitToDisplayBulletHit(hit));
+            }
+            else
+            {
+                SpawnTrailServerRpc(hit.point);
             }
             //guns.types[currentBulletIndex].shootingSystem.Play();
             Debug.Log(currentAmmo);
@@ -66,7 +74,7 @@ public class GunManager : NetworkBehaviour
             StartCoroutine(FireRateDelay(guns.types[currentBulletIndex].fireRate));
         }
 
-
+        CheckMag();
     }
     private bool CheckIfHasTarget(Vector3 pos)
     {
@@ -94,9 +102,22 @@ public class GunManager : NetworkBehaviour
             StartCoroutine(Reload(guns.types[currentBulletIndex].reloadTime));
         }
     }
+    private void CallReloadRoutine()
+    {
+        if (canReload)
+        {
+            StopCoroutine(Reload(guns.types[currentBulletIndex].reloadTime));
+            currentAmmo = 0;
+            StartCoroutine(Reload(guns.types[currentBulletIndex].reloadTime));
+        }
+    }
     IEnumerator Reload(float reloadTime)
     {
+        Debug.Log("Reloading");
+        canReload = false;
+        playerAnimations.PlayReloadAnimation();
         yield return new WaitForSeconds(reloadTime);
+        canReload = true;
         currentAmmo = guns.types[currentBulletIndex].maxAmmo;
     }
     #endregion

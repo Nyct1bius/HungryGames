@@ -30,7 +30,7 @@ public class PlayerVisual : NetworkBehaviour
         else
         {
             head.SetActive(true);
-          
+
         }
         if (!IsHost)
         {
@@ -57,21 +57,34 @@ public class PlayerVisual : NetworkBehaviour
     }
     private void Walk()
     {
+        if (!IsOwner) return;
         animator.SetBool("IsWalking", true);
     }
     private void StopWalk()
     {
+        if (!IsOwner) return;
         animator.SetBool("IsWalking", false);
+        StopRun();
     }
     private void Run()
     {
+        if (!IsOwner) return;
         animator.SetBool("IsRunning", true);
     }
 
     private void StopRun()
     {
+        if (!IsOwner) return;
         animator.SetBool("IsRunning", false);
     }
 
+    public void PlayShootAnimation()
+    {
+        animator.SetTrigger("IsShooting");
+    }
+    public void PlayReloadAnimation()
+    {
+        animator.SetTrigger("IsReloading");
+    }
 
 }
