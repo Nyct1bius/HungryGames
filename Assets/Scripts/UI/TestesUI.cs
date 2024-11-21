@@ -15,13 +15,13 @@ public class TestesUI : MonoBehaviour
 
     void Start()
     {
-        healthBar.SetMaxHealthServerRpc(_playerMaxHealth);
+        healthBar.SetMaxHealth(_playerMaxHealth);
     }
 
     // Update is called once per frame
     void Update()
     {
-        healthBar.SetHealthServerRpc(_playerCurrentHealth);
+        healthBar.SetHealth(_playerCurrentHealth);
 
         if (_playerDeath >= 3 )
         {

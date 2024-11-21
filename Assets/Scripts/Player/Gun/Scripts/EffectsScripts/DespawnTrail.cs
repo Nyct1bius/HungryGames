@@ -12,7 +12,7 @@ public class DespawnTrail : NetworkBehaviour
 
     IEnumerator waitToDestory()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(2f);
         DestroyTrailServerRpc();
     }
     [ServerRpc(RequireOwnership = false)]

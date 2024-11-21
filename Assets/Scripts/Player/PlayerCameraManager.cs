@@ -8,7 +8,9 @@ public class PlayerCameraManager : MonoBehaviour
 {
     private float _sensibility;
     private GameObject _playerRef;
-    private Transform _playerVisual;
+    private Transform _playerHeadRef;
+    private Transform playerBody;
+    private PlayerVisual _playerVisual;
 
     private GunManager _gunManager;
 
@@ -23,7 +25,7 @@ public class PlayerCameraManager : MonoBehaviour
     }
     private void Update()
     {
-        Vector3 cameraPosOffset = new Vector3(_playerVisual.position.x, _playerVisual.position.y + 3.5f, _playerVisual.position.z);
+        Vector3 cameraPosOffset = _playerHeadRef.position;
         transform.position = cameraPosOffset;
         Vector2 mousePos = _inputManager.GetMouseDelta();
         float mouseX = mousePos.x * Time.deltaTime * _sensibility;
@@ -32,22 +34,25 @@ public class PlayerCameraManager : MonoBehaviour
         yRotation += mouseX;
         xRotation -= mouseY;
 
-        xRotation = Mathf.Clamp(xRotation, -75, 75);
+        xRotation = Mathf.Clamp(xRotation, -55, 55);
 
         //Rotate Camera and orietation
         transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
-        _playerVisual.Rotate(Vector3.up * mouseX);
+        _playerVisual.AimDirection(-xRotation);
+        playerBody.Rotate(Vector3.up * mouseX);
 
     }
 
-    public void SetupCameraVariables(GameObject playerRef, Transform playerVisual, InputManager inputManager, float sensibility, 
-                                     RectTransform crosshair, GunManager gunManager, CinemachineVirtualCamera vCamera)
+    public void SetupCameraVariables(GameObject playerRef, Transform playerVisual,Transform playerBodyRef, InputManager inputManager, float sensibility, 
+                                     RectTransform crosshair, GunManager gunManager, CinemachineVirtualCamera vCamera,PlayerVisual animationManager)
     {
         _playerRef = playerRef;
-        _playerVisual = playerVisual;
+        _playerHeadRef = playerVisual;
+        playerBody = playerBodyRef;
         _inputManager = inputManager;
         _sensibility = sensibility * 10;
         _gunManager = gunManager;
+        _playerVisual = animationManager;
         vCamera.Follow = transform;
         vCamera.LookAt = transform;
         _gunManager.SetupVariables(inputManager, crosshair);

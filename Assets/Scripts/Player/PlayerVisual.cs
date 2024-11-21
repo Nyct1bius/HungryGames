@@ -55,6 +55,11 @@ public class PlayerVisual : NetworkBehaviour
         inputManager.OnRun -= Run;
         inputManager.OnStopRun -= StopRun;
     }
+    public void AimDirection(float mouseY)
+    {
+        animator.SetFloat("MousePosY", mouseY);
+    }
+          
     private void Walk()
     {
         if (!IsOwner) return;

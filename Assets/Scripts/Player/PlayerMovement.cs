@@ -16,7 +16,7 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private GameObject mainCameraPrefab;
     [SerializeField] private Transform cameraOffset;
     [SerializeField] private GameObject fpsCameraPrefab;
-    [SerializeField] private Transform playerVisual;
+    [SerializeField] private Transform playerHeadRef;
     [SerializeField] private CinemachineVirtualCamera vCamera;
     [SerializeField] private GunManager gunManager;
     [Range(0, 10)]
@@ -40,6 +40,9 @@ public class PlayerMovement : NetworkBehaviour
 
     [Header("Crosshair variables")]
     [SerializeField] private RectTransform crosshair;
+    [Header("Animation manager")]
+    [SerializeField] private PlayerVisual animationManager;
+    [SerializeField] private Transform playerBodyRef;
 
     public override void OnNetworkSpawn()
     {
@@ -148,10 +151,10 @@ public class PlayerMovement : NetworkBehaviour
         mainCameraRef = Instantiate(mainCameraPrefab);
         listerner = mainCameraRef.GetComponent<AudioListener>();
         listerner.enabled = true;
-        fpsCameraRef = Instantiate(fpsCameraPrefab, playerVisual.position, Quaternion.identity);
+        fpsCameraRef = Instantiate(fpsCameraPrefab, playerHeadRef.position, Quaternion.identity);
         vCamera.Priority = 10;
         PlayerCameraManager cameraManager = fpsCameraRef.GetComponent<PlayerCameraManager>();
-        cameraManager.SetupCameraVariables(this.gameObject, playerVisual, inputManager, sensibility, crosshair, gunManager, vCamera);
+        cameraManager.SetupCameraVariables(this.gameObject, playerHeadRef,playerBodyRef, inputManager, sensibility, crosshair, gunManager, vCamera,animationManager);
         SpawnCamerasServerRpc();
         GameObject[] cameras = GameObject.FindGameObjectsWithTag("MainCamera");
         foreach (GameObject camera in cameras)

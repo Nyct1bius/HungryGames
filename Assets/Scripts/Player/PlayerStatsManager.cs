@@ -16,9 +16,10 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
 
         if (IsOwner)
         {
+            transform.position = new Vector3(10, 10, 10);
             // gameObject.layer = playerLocalLayer;
             currentHealth = maxHealth;
-            healthBar.SetMaxHealthServerRpc(currentHealth);
+            healthBar.SetMaxHealth(currentHealth);
         }
         else
         {
@@ -27,7 +28,6 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
         }
 
     }
-
     public void Buff(float damageMultiplierBuff, float speedMultiplierBuff, float armorBuff)
     {
 
@@ -36,18 +36,23 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
     public void Damage(int damage)
     {
         if (!IsOwner) return;
-        DamageServerRpc(damage);
-    }
-    [ServerRpc]
-    private void DamageServerRpc(int damage)
-    {
         currentHealth -= damage;
-        healthBar.SetHealthServerRpc(currentHealth);
+        healthBar.SetHealth(currentHealth);
         Debug.Log(currentHealth);
     }
+    
     public void Debuff(float damageMultiplierDebuff, float speedMultiplierDebuff, float armorDebuff)
     {
         
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!IsOwner) return;
+        DespawnTrail despawnTrail = collision.gameObject.GetComponent<DespawnTrail>();
+        if(despawnTrail != null)
+        {
+            Damage(5);
+        }
+    }
 }

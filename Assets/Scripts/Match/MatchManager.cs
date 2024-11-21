@@ -11,37 +11,24 @@ public class MatchManager : NetworkBehaviour
     [SerializeField] private Transform[] spawnPoints;
     private int index;
     private Transform currentPlayer;
-    private void Start()
+    public override void OnNetworkSpawn()
     {
         localInstance = this;
     }
     public void PlayerToSpawnLocation(Transform player)
     {
         if (!IsOwner) return;
-            currentPlayer = player;
         if (index < spawnPoints.Length)
         {
-            MovePlayerToSpawnServerRpc();
+            player.position = spawnPoints[index].position;
             index++;
         }
         else
         {
             index = 0;
-            MovePlayerToSpawnServerRpc();
+            player.transform.position = spawnPoints[index].position;
             index++;
         }
 
-    }
-    [ServerRpc]
-    private void MovePlayerToSpawnServerRpc()
-    {
-       
-        MovePlayerToSpawnClientRpc();
-    }
-    [ClientRpc]
-    private void MovePlayerToSpawnClientRpc()
-    {
-
-        currentPlayer.position = spawnPoints[index].position;
     }
 }

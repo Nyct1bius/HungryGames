@@ -16,7 +16,7 @@ public class GunManager : NetworkBehaviour
     private bool canShoot = true;
     private int currentAmmo;
     private RectTransform crosshair;
-    private bool canReload;
+    private bool canReload = true;
     public int currentBulletIndex;
 
     private Animator anim;
@@ -61,8 +61,7 @@ public class GunManager : NetworkBehaviour
             if (Physics.Raycast(mouseWorldPos, out RaycastHit hit, float.MaxValue, mask))
             {
                 SpawnTrailServerRpc(hit.point);
-                SetupTarget(hit.collider.gameObject);
-                StartCoroutine(waitToDisplayBulletHit(hit));
+                StartCoroutine(WaitToDisplayBulletHit(hit));
             }
             else
             {
@@ -76,24 +75,10 @@ public class GunManager : NetworkBehaviour
 
         CheckMag();
     }
-    private bool CheckIfHasTarget(Vector3 pos)
-    {
-        return Physics.CheckSphere(pos, 0.1f, playerMask);
-    }
     IEnumerator FireRateDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
         canShoot = true;
-    }
-    private void SetupTarget(GameObject hitTarget)
-    {
-        localTarget = hitTarget;
-        NetworkObject targetNO = localTarget.GetComponent<NetworkObject>();
-        if (targetNO != null)
-        {
-            localTargetID = targetNO.OwnerClientId;
-        }
-
     }
     private void CheckMag()
     {
@@ -126,7 +111,7 @@ public class GunManager : NetworkBehaviour
     {
         float time = 0;
         Vector3 startPosition = trail.transform.position;
-        while (time < 0.5f)
+        while (time < 1f)
         {
             trail.transform.position = Vector3.Lerp(startPosition, endPos, time);
             time += Time.deltaTime / trail.time;
@@ -134,26 +119,14 @@ public class GunManager : NetworkBehaviour
         }
         trail.transform.position = endPos;
     }
-    private IEnumerator waitToDisplayBulletHit(RaycastHit hit)
+    private IEnumerator WaitToDisplayBulletHit(RaycastHit hit)
     {
         yield return new WaitForSeconds(0.15f);
-        SpawnBulletImpactServerRpc(hit.point, hit.normal);
-        if(CheckIfHasTarget(hit.point) && localTarget != null)
-        {
-            DealsDamage();
-        }
+        SpawnBulletImpactServerRpc(hit.point, hit.normal);      
     }
     #endregion
     #region ClientCalls
 
-    private void DealsDamage()
-    {
-        PlayerStatsManager stats = localTarget.GetComponent<PlayerStatsManager>();
-        if (stats != null)
-        {
-            stats.Damage(guns.types[currentBulletIndex].damage);
-        }
-    }
 
     [ServerRpc]
     private void SpawnTrailServerRpc(Vector3 endPos)
