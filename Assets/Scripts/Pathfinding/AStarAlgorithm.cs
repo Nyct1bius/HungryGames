@@ -93,14 +93,8 @@ public class AStarAlgorithm : MonoBehaviour
     {
         int distX = Mathf.Abs(unitA.GridX - unitB.GridX);
         int distY = Mathf.Abs(unitA.GridY - unitB.GridY);
+        int distZ = Mathf.Abs(unitA.GridZ - unitB.GridZ);
 
-        if (distX > distY)
-        {
-            return 14 * distY + 10 * (distX - distY);
-        }
-        else
-        {
-            return 14 * distX + 10 * (distY - distX);
-        }
+        return 10 * (distX + distY + distZ);
     }
 }
