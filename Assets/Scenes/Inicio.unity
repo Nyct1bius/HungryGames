@@ -2173,7 +2173,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Titulo do jogo
+  m_text: Hungry Games
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a99ace2c0c3aa0e4ab919e0055e6862a, type: 2}
   m_sharedMaterial: {fileID: 8222197830588179557, guid: a99ace2c0c3aa0e4ab919e0055e6862a, type: 2}
@@ -2200,8 +2200,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 144.15
-  m_fontSizeBase: 144.15
+  m_fontSize: 128
+  m_fontSizeBase: 128
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
