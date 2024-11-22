@@ -17,7 +17,7 @@ public class MatchManager : NetworkBehaviour
     }
     public void PlayerToSpawnLocation(Transform player)
     {
-        if (!IsOwner) return;
+       
         if (index < spawnPoints.Length)
         {
             player.position = spawnPoints[index].position;

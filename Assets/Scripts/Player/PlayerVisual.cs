@@ -55,6 +55,10 @@ public class PlayerVisual : NetworkBehaviour
         inputManager.OnRun -= Run;
         inputManager.OnStopRun -= StopRun;
     }
+    public void PlayDeathAnim()
+    {
+        animator.SetTrigger("IsDead");
+    }
     public void AimDirection(float mouseY)
     {
         animator.SetFloat("MousePosY", mouseY);

@@ -65,7 +65,7 @@ public class GunManager : NetworkBehaviour
             }
             else
             {
-                SpawnTrailServerRpc(hit.point);
+                SpawnTrailServerRpc(mouseWorldPos.direction);
             }
             //guns.types[currentBulletIndex].shootingSystem.Play();
             Debug.Log(currentAmmo);

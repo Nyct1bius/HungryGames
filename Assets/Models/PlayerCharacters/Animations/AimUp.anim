@@ -22,7 +22,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: 0.0007463044
         inSlope: -0.00057824055
         outSlope: -0.00057824055
@@ -106,7 +106,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: -0.0032542185
         inSlope: 0.0016430576
         outSlope: 0.0016430576
@@ -127,7 +127,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: -0.00043786806
         inSlope: 0.00006391072
         outSlope: 0.00006391072
@@ -463,7 +463,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: 0.006571709
         inSlope: -0.011692864
         outSlope: -0.011692864
@@ -610,7 +610,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: 0.06936829
         inSlope: -0.009263375
         outSlope: -0.009263375
@@ -715,7 +715,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: 0.23946661
         inSlope: 0.05007852
         outSlope: 0.05007852
@@ -841,7 +841,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: -0.00000061674274
         inSlope: -0.0000032483174
         outSlope: -0.0000032483174
@@ -862,7 +862,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: 0.00000025673904
         inSlope: 0.0000025668419
         outSlope: 0.0000025668419
@@ -904,7 +904,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: -0.0000012542201
         inSlope: -0.0000011025104
         outSlope: -0.0000011025104
@@ -925,7 +925,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: -0.00000042789839
         inSlope: 0.0000010273874
         outSlope: 0.0000010273874
@@ -946,7 +946,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: -0.58165526
         inSlope: 0.04474707
         outSlope: 0.04474707
@@ -967,7 +967,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: 0.0000003281665
         inSlope: -0.00000087332467
         outSlope: -0.00000087332467
@@ -988,7 +988,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: -0.0000005230073
         inSlope: 0.00000078689015
         outSlope: 0.00000078689015
@@ -1051,7 +1051,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: -0.074272834
         inSlope: 0.005710599
         outSlope: 0.005710599
@@ -1534,7 +1534,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: -0.22013558
         inSlope: -0.10361233
         outSlope: -0.10361233
@@ -1555,7 +1555,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: -0.02298392
         inSlope: -0.11252594
         outSlope: -0.11252594
@@ -1576,7 +1576,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: -0.026645008
         inSlope: -0.052663878
         outSlope: -0.052663878
@@ -1765,7 +1765,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: 0.24194428
         inSlope: -0.077494875
         outSlope: -0.077494875
@@ -3931,7 +3931,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.000000029802322
+    m_StopTime: 0
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -3952,7 +3952,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: 0.0007463044
         inSlope: -0.00057824055
         outSlope: -0.00057824055
@@ -4036,7 +4036,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: -0.0032542185
         inSlope: 0.0016430576
         outSlope: 0.0016430576
@@ -4057,7 +4057,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: -0.00043786806
         inSlope: 0.00006391072
         outSlope: 0.00006391072
@@ -4393,7 +4393,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: 0.006571709
         inSlope: -0.011692864
         outSlope: -0.011692864
@@ -4540,7 +4540,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: 0.06936829
         inSlope: -0.009263375
         outSlope: -0.009263375
@@ -4645,7 +4645,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: 0.23946661
         inSlope: 0.05007852
         outSlope: 0.05007852
@@ -4771,7 +4771,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: -0.00000061674274
         inSlope: -0.0000032483174
         outSlope: -0.0000032483174
@@ -4792,7 +4792,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: 0.00000025673904
         inSlope: 0.0000025668419
         outSlope: 0.0000025668419
@@ -4834,7 +4834,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: -0.0000012542201
         inSlope: -0.0000011025104
         outSlope: -0.0000011025104
@@ -4855,7 +4855,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: -0.00000042789839
         inSlope: 0.0000010273874
         outSlope: 0.0000010273874
@@ -4876,7 +4876,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: -0.58165526
         inSlope: 0.04474707
         outSlope: 0.04474707
@@ -4897,7 +4897,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: 0.0000003281665
         inSlope: -0.00000087332467
         outSlope: -0.00000087332467
@@ -4918,7 +4918,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: -0.0000005230073
         inSlope: 0.00000078689015
         outSlope: 0.00000078689015
@@ -4981,7 +4981,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: -0.074272834
         inSlope: 0.005710599
         outSlope: 0.005710599
@@ -5464,7 +5464,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: -0.22013558
         inSlope: -0.10361233
         outSlope: -0.10361233
@@ -5485,7 +5485,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: -0.02298392
         inSlope: -0.11252594
         outSlope: -0.11252594
@@ -5506,7 +5506,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: -0.026645008
         inSlope: -0.052663878
         outSlope: -0.052663878
@@ -5695,7 +5695,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.000000029802322
+        time: 0
         value: 0.24194428
         inSlope: -0.077494875
         outSlope: -0.077494875

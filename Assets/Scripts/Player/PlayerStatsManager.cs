@@ -9,6 +9,9 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
     [SerializeField] public int maxHealth;
     [SerializeField] public int maxSpeed;
     [SerializeField] private LayerMask playerLocalLayer;
+    [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private InputManager inputManager;
+    [SerializeField] private PlayerVisual playerVisual;
     private int currentHealth;
 
     public override void OnNetworkSpawn()
@@ -16,10 +19,10 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
 
         if (IsOwner)
         {
-            transform.position = new Vector3(10, 10, 10);
             // gameObject.layer = playerLocalLayer;
             currentHealth = maxHealth;
             healthBar.SetMaxHealth(currentHealth);
+            StartCoroutine(WaitToMove());
         }
         else
         {
@@ -27,6 +30,11 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
             healthBar.gameObject.SetActive(false);
         }
 
+    }
+    IEnumerator WaitToMove()
+    {
+        yield return new WaitForSeconds(0.1f);
+        MatchManager.localInstance.PlayerToSpawnLocation(this.transform);
     }
     public void Buff(float damageMultiplierBuff, float speedMultiplierBuff, float armorBuff)
     {
@@ -39,8 +47,17 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
         currentHealth -= damage;
         healthBar.SetHealth(currentHealth);
         Debug.Log(currentHealth);
+        if (currentHealth <= 0)
+        {
+            Death();
+        }
     }
-    
+    private void Death()
+    {
+        playerMovement.enabled = false;
+        inputManager.enabled = false;
+        playerVisual.PlayDeathAnim();
+    }
     public void Debuff(float damageMultiplierDebuff, float speedMultiplierDebuff, float armorDebuff)
     {
         
@@ -52,7 +69,7 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
         DespawnTrail despawnTrail = collision.gameObject.GetComponent<DespawnTrail>();
         if(despawnTrail != null)
         {
-            Damage(5);
+            Damage(50);
         }
     }
 }
