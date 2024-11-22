@@ -27,7 +27,7 @@ public class AStarGrid : MonoBehaviour
     {
         grid = new GridUnit[gridSizeX, gridSizeY, gridSizeZ];
 
-        Vector3 worldBottomLeft = transform.position - Vector3.right * GridWorldSize.x / 2 - Vector3.forward * GridWorldSize.y / 2;
+        Vector3 worldBottomLeft = transform.position - Vector3.right * GridWorldSize.x / 2 - Vector3.up * GridWorldSize.y / 2 - Vector3.forward * GridWorldSize.z / 2;
         
         for (int x = 0; x < gridSizeX; x++)
         {
@@ -37,8 +37,8 @@ public class AStarGrid : MonoBehaviour
                 {
                     Vector3 worldPoint = worldBottomLeft 
                                          + Vector3.right * (x * unitDiameter + UnitRadius) 
-                                         + Vector3.forward * (y * unitDiameter + UnitRadius) 
-                                         + Vector3.up * (z * unitDiameter + UnitRadius);
+                                         + Vector3.up * (y * unitDiameter + UnitRadius) 
+                                         + Vector3.forward * (z * unitDiameter + UnitRadius);
 
                     bool walkable = !(Physics.CheckSphere(worldPoint, UnitRadius, ObstacleMask));
 
@@ -81,8 +81,8 @@ public class AStarGrid : MonoBehaviour
     public GridUnit UnitFromWorldPoint(Vector3 worldPos)
     {
         float percentX = (worldPos.x + GridWorldSize.x / 2) / GridWorldSize.x;
-        float percentY = (worldPos.z + GridWorldSize.y / 2) / GridWorldSize.y;
-        float percentZ = (worldPos.y + GridWorldSize.z / 2) / GridWorldSize.z;
+        float percentY = (worldPos.y + GridWorldSize.y / 2) / GridWorldSize.y;
+        float percentZ = (worldPos.z + GridWorldSize.z / 2) / GridWorldSize.z;
 
         percentX = Mathf.Clamp01(percentX);
         percentY = Mathf.Clamp01(percentY);
@@ -99,7 +99,7 @@ public class AStarGrid : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireCube(transform.position, new Vector3(GridWorldSize.x, GridWorldSize.z, GridWorldSize.y));
+        Gizmos.DrawWireCube(transform.position, new Vector3(GridWorldSize.x, GridWorldSize.y, GridWorldSize.z));
 
         if (grid != null)
         {

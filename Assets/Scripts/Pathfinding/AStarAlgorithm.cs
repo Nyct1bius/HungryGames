@@ -10,7 +10,7 @@ public class AStarAlgorithm : MonoBehaviour
 
     private void Awake()
     {
-        grid = GetComponent<AStarGrid>();   
+        grid = GetComponent<AStarGrid>();
     }
 
     private void Update()
