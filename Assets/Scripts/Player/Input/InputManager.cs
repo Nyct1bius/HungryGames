@@ -9,8 +9,8 @@ using UnityEngine.InputSystem;
 public class InputManager : NetworkBehaviour
 {
     PlayerInputAction playerInputActions;
-
-    public event Action OnWalk,OnStopWalk, OnJump,OnRun,OnStopRun, OnShoot,OnReload; 
+    private bool shooting;
+    public event Action OnWalk,OnStopWalk, OnJump,OnRun,OnStopRun,OnReload; 
     private void Awake()
     {
         playerInputActions = new PlayerInputAction();
@@ -23,8 +23,9 @@ public class InputManager : NetworkBehaviour
         playerInputActions.Controls.Jump.performed += PlayerJumped;
         playerInputActions.Controls.Run.performed += PlayerRun;
         playerInputActions.Controls.Run.canceled += PlayerStopRun;
-        playerInputActions.Controls.Shoot.performed += PlayerShoot;
         playerInputActions.Controls.Reload.performed += PlayerReload;
+        playerInputActions.Controls.Shoot.performed += ShootPerformed;
+        playerInputActions.Controls.Shoot.canceled += ShootCanceled;
     }
     private void OnDisable()
     {
@@ -34,8 +35,9 @@ public class InputManager : NetworkBehaviour
         playerInputActions.Controls.Jump.performed -= PlayerJumped;
         playerInputActions.Controls.Run.performed -= PlayerRun;
         playerInputActions.Controls.Run.canceled -= PlayerStopRun;
-        playerInputActions.Controls.Shoot.performed -= PlayerShoot;
         playerInputActions.Controls.Reload.performed -= PlayerReload;
+        playerInputActions.Controls.Shoot.performed -= ShootPerformed;
+        playerInputActions.Controls.Shoot.canceled -= ShootCanceled;
     }
 
     public Vector2 GetNormalizedInputDirection()
@@ -74,10 +76,17 @@ public class InputManager : NetworkBehaviour
     {
         OnStopRun?.Invoke();
     }
-    private void PlayerShoot(InputAction.CallbackContext context)
+    public bool PlayerShoot()
     {
-        OnShoot?.Invoke();
+        return shooting;
     }
-
+    private void ShootPerformed(InputAction.CallbackContext context)
+    {
+        shooting = true;
+    }
+    private void ShootCanceled(InputAction.CallbackContext context)
+    {
+        shooting = false;
+    }
 
 }

@@ -12,7 +12,12 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private InputManager inputManager;
     [SerializeField] private PlayerVisual playerVisual;
+    [SerializeField] private Guns guns;
+    [SerializeField] private GameObject playerMesh;
     private int currentHealth;
+
+
+    private bool isDead;
 
     public override void OnNetworkSpawn()
     {
@@ -22,19 +27,13 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
             // gameObject.layer = playerLocalLayer;
             currentHealth = maxHealth;
             healthBar.SetMaxHealth(currentHealth);
-            StartCoroutine(WaitToMove());
         }
         else
         {
 
             healthBar.gameObject.SetActive(false);
         }
-
-    }
-    IEnumerator WaitToMove()
-    {
-        yield return new WaitForSeconds(0.1f);
-        MatchManager.localInstance.PlayerToSpawnLocation(this.transform);
+        MatchManager.localInstance.PlayerToSpawnLocation(gameObject);
     }
     public void Buff(float damageMultiplierBuff, float speedMultiplierBuff, float armorBuff)
     {
@@ -44,19 +43,35 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
     public void Damage(int damage)
     {
         if (!IsOwner) return;
-        currentHealth -= damage;
-        healthBar.SetHealth(currentHealth);
-        Debug.Log(currentHealth);
-        if (currentHealth <= 0)
+        if (!isDead)
         {
-            Death();
+            currentHealth -= damage;
+            healthBar.SetHealth(currentHealth);
+            Debug.Log(currentHealth);
+            if (currentHealth <= 0)
+            {
+                Death();
+            }
         }
+    
     }
     private void Death()
     {
+        isDead = true;
+        playerVisual.PlayDeathAnim();
         playerMovement.enabled = false;
         inputManager.enabled = false;
-        playerVisual.PlayDeathAnim();
+        MatchManager.localInstance.PlayerDied(gameObject, playerMesh,OwnerClientId);
+    }
+    public void Revive()
+    {
+        currentHealth = maxHealth;
+        healthBar.SetHealth(currentHealth);
+        isDead = false;
+        playerMovement.enabled = true;
+        inputManager.enabled = true;
+        playerVisual.PlayReviveAnim();
+
     }
     public void Debuff(float damageMultiplierDebuff, float speedMultiplierDebuff, float armorDebuff)
     {
@@ -67,9 +82,10 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
     {
         if (!IsOwner) return;
         DespawnTrail despawnTrail = collision.gameObject.GetComponent<DespawnTrail>();
+        int currentBulletIndex = despawnTrail.bulletIndex;
         if(despawnTrail != null)
         {
-            Damage(50);
+            Damage(guns.types[currentBulletIndex].damage);
         }
     }
 }

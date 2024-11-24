@@ -17,11 +17,11 @@ MonoBehaviour:
     ID: 0
     addBulletSpread: 0
     bulletSpreadVariance: {x: 0, y: 0, z: 0}
-    fireRate: 0.5
+    fireRate: 0.7
     maxDistance: 300
-    damage: 0
+    damage: 25
     shootingSystem: {fileID: 5696961974026004217, guid: 1b0c2f96fd2d5304a8307f16e80914c2, type: 3}
     ImpactParticleSystem: {fileID: 8535707044595332166, guid: 194ff926cca7541479e029e8d4951f81, type: 3}
-    bulletTrail: {fileID: 5041931304547258541, guid: 9c20c07e1bad49e44acd3b1597747c58, type: 3}
+    bulletVFX: {fileID: 6219395197802019638, guid: 8a9521cad3feaca40b8f573872717c58, type: 3}
     maxAmmo: 10
     reloadTime: 3

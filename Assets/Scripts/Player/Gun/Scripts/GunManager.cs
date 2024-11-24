@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,6 +14,7 @@ public class GunManager : NetworkBehaviour
     [SerializeField] private LayerMask playerMask;
     [SerializeField] private Guns guns;
     [SerializeField] private PlayerVisual playerAnimations;
+    [SerializeField] private InputManager inputManager;
     private bool canShoot = true;
     private int currentAmmo;
     private RectTransform crosshair;
@@ -35,31 +37,34 @@ public class GunManager : NetworkBehaviour
     {
         _inputManager = inputManager;
         this.crosshair = crosshair;
-        _inputManager.OnShoot += Shoot;
         _inputManager.OnReload += CallReloadRoutine;
+    }
+    private void OnDisable()
+    {
+        _inputManager.OnReload -= CallReloadRoutine;
     }
     private void Update()
     {
         if (!IsOwner) return;
-        Debug.DrawLine(mouseWorldPos.origin, spawnBulletHit.point, Color.green);
+        if (inputManager.PlayerShoot() && canShoot)
+        {
+            Shoot();
+            Debug.Log("Fire");
+        }
     }
-    private void OnDisable()
-    {
-        _inputManager.OnShoot -= Shoot;
-        _inputManager.OnShoot -= CallReloadRoutine;
-    }
+ 
     #region Shoot Logic
+
     private void Shoot()
     {
-        if (!IsOwner) return;
         mouseWorldPos = Camera.main.ScreenPointToRay(crosshair.position);
-        if (canShoot && currentAmmo > 0)
+        if (currentAmmo > 0)
         {
             currentAmmo--;
             canShoot = false;
-            playerAnimations.PlayShootAnimation();
             if (Physics.Raycast(mouseWorldPos, out RaycastHit hit, float.MaxValue, mask))
             {
+                playerAnimations.PlayShootAnimation();
                 SpawnTrailServerRpc(hit.point);
                 StartCoroutine(WaitToDisplayBulletHit(hit));
             }
@@ -84,14 +89,25 @@ public class GunManager : NetworkBehaviour
     {
         if (currentAmmo == 0)
         {
-            StartCoroutine(Reload(guns.types[currentBulletIndex].reloadTime));
+            if (canReload)
+            {
+                playerAnimations.PlayReloadAnimation();
+                StopCoroutine(FireRateDelay(guns.types[currentBulletIndex].fireRate));
+                canShoot = false;
+                StartCoroutine(Reload(guns.types[currentBulletIndex].reloadTime));
+
+            }
+         
         }
     }
     private void CallReloadRoutine()
     {
         if (canReload)
         {
+            StopCoroutine(FireRateDelay(guns.types[currentBulletIndex].fireRate));
             StopCoroutine(Reload(guns.types[currentBulletIndex].reloadTime));
+            playerAnimations.PlayReloadAnimation();
+            canShoot = false;
             currentAmmo = 0;
             StartCoroutine(Reload(guns.types[currentBulletIndex].reloadTime));
         }
@@ -100,21 +116,21 @@ public class GunManager : NetworkBehaviour
     {
         Debug.Log("Reloading");
         canReload = false;
-        playerAnimations.PlayReloadAnimation();
         yield return new WaitForSeconds(reloadTime);
-        canReload = true;
+        canReload = true; 
+        canShoot = true;
         currentAmmo = guns.types[currentBulletIndex].maxAmmo;
     }
     #endregion
     #region Move Bullet To Target
-    private IEnumerator MoveTrailToHitServer(TrailRenderer trail, Vector3 endPos)
+    private IEnumerator MoveTrailToHitServer(GameObject trail, Vector3 endPos)
     {
         float time = 0;
         Vector3 startPosition = trail.transform.position;
-        while (time < 1f)
+        while (time < 0.5f)
         {
             trail.transform.position = Vector3.Lerp(startPosition, endPos, time);
-            time += Time.deltaTime / trail.time;
+            time += Time.deltaTime/0.1f;
             yield return null;
         }
         trail.transform.position = endPos;
@@ -131,7 +147,8 @@ public class GunManager : NetworkBehaviour
     [ServerRpc]
     private void SpawnTrailServerRpc(Vector3 endPos)
     {
-        TrailRenderer bulletTrail = Instantiate(guns.types[currentBulletIndex].bulletTrail, bulletSpawnPoint.position, Quaternion.identity);
+        GameObject bulletTrail = Instantiate(guns.types[currentBulletIndex].bulletVFX, bulletSpawnPoint.position, Quaternion.identity);
+        bulletTrail.GetComponent<DespawnTrail>().bulletIndex = currentBulletIndex;
         bulletTrail.GetComponent<NetworkObject>().Spawn();
         StartCoroutine(MoveTrailToHitServer(bulletTrail, endPos));
     }

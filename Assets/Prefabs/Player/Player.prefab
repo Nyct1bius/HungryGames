@@ -2096,7 +2096,6 @@ GameObject:
   - component: {fileID: 637760054251860155}
   - component: {fileID: 3403929850435421297}
   - component: {fileID: 912300598074796828}
-  - component: {fileID: 454769172085162978}
   m_Layer: 9
   m_Name: GunModel
   m_TagString: Untagged
@@ -2193,37 +2192,8 @@ MonoBehaviour:
     m_Bits: 512
   guns: {fileID: 11400000, guid: 3c3e09598f88a7347836d7f1ac648a64, type: 2}
   playerAnimations: {fileID: 5404809578374238528}
+  inputManager: {fileID: 3782179939153206032}
   currentBulletIndex: 0
---- !u!114 &454769172085162978
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3764389551295096228}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d968a59d333429a4d8ba2f4290065f1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SyncPositionX: 1
-  SyncPositionY: 1
-  SyncPositionZ: 1
-  SyncRotAngleX: 1
-  SyncRotAngleY: 1
-  SyncRotAngleZ: 1
-  SyncScaleX: 1
-  SyncScaleY: 1
-  SyncScaleZ: 1
-  PositionThreshold: 0.001
-  RotAngleThreshold: 0.01
-  ScaleThreshold: 0.01
-  UseQuaternionSynchronization: 0
-  UseQuaternionCompression: 0
-  UseHalfFloatPrecision: 0
-  InLocalSpace: 0
-  Interpolate: 1
-  SlerpPosition: 0
 --- !u!1 &3821518218828111038
 GameObject:
   m_ObjectHideFlags: 0
@@ -2834,6 +2804,8 @@ MonoBehaviour:
   playerMovement: {fileID: 422153264897805532}
   inputManager: {fileID: 3782179939153206032}
   playerVisual: {fileID: 5404809578374238528}
+  guns: {fileID: 11400000, guid: 3c3e09598f88a7347836d7f1ac648a64, type: 2}
+  playerMesh: {fileID: 9205093999630723383}
 --- !u!114 &422153264897805532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2925,7 +2897,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.86
+  m_Radius: 0.54
   m_Height: 3.91
   m_Direction: 1
   m_Center: {x: 0, y: 0.92, z: 0}
@@ -4915,9 +4887,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4686258252571493836}
   - component: {fileID: 4719108218972594917}
-  - component: {fileID: 6541396577967465517}
   - component: {fileID: 5404809578374238528}
   - component: {fileID: 8351516709187762539}
+  - component: {fileID: 8400910444591978117}
   m_Layer: 0
   m_Name: Jasildo
   m_TagString: Untagged
@@ -4965,36 +4937,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6541396577967465517
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9205093999630723383}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d968a59d333429a4d8ba2f4290065f1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SyncPositionX: 1
-  SyncPositionY: 1
-  SyncPositionZ: 1
-  SyncRotAngleX: 1
-  SyncRotAngleY: 1
-  SyncRotAngleZ: 1
-  SyncScaleX: 0
-  SyncScaleY: 0
-  SyncScaleZ: 0
-  PositionThreshold: 0.001
-  RotAngleThreshold: 0.01
-  ScaleThreshold: 0.01
-  UseQuaternionSynchronization: 0
-  UseQuaternionCompression: 0
-  UseHalfFloatPrecision: 0
-  InLocalSpace: 0
-  Interpolate: 1
-  SlerpPosition: 0
 --- !u!114 &5404809578374238528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5028,3 +4970,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TransitionStateInfoList: []
   m_Animator: {fileID: 4719108218972594917}
+--- !u!114 &8400910444591978117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9205093999630723383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d968a59d333429a4d8ba2f4290065f1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 1
+  SyncScaleY: 1
+  SyncScaleZ: 1
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  Interpolate: 1
+  SlerpPosition: 0

@@ -5,18 +5,24 @@ using UnityEngine;
 
 public class DespawnTrail : NetworkBehaviour
 {
+    public int bulletIndex;
+    [SerializeField] private GameObject bulletVisual;
     public override void OnNetworkSpawn()
     {
         StartCoroutine(waitToDestory());
     }
-
     IEnumerator waitToDestory()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.2f);
         DestroyTrailServerRpc();
     }
     [ServerRpc(RequireOwnership = false)]
-    public void DestroyTrailServerRpc()
+    private void DisableBulletServerRpc()
+    {
+        bulletVisual.SetActive(false);
+    }
+    [ServerRpc(RequireOwnership = false)]
+    private void DestroyTrailServerRpc()
     {
         GetComponent<NetworkObject>().Despawn();
         Destroy(this);
