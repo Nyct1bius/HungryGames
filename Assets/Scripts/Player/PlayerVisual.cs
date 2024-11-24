@@ -30,14 +30,10 @@ public class PlayerVisual : NetworkBehaviour
         else
         {
             head.SetActive(true);
-
-        }
-        if (!IsHost)
-        {
             SkinnedMeshRenderer headeRender = head.GetComponent<SkinnedMeshRenderer>();
             legs.material = alternativeLegMat;
             torso.material = alternativeTorsoMat;
-            headeRender.material = alternativeHeadMat;
+            headeRender.material = alternativeHeadMat; 
         }
 
     }
@@ -57,7 +53,12 @@ public class PlayerVisual : NetworkBehaviour
     }
     public void PlayDeathAnim()
     {
-        animator.SetTrigger("IsDead");
+        animator.SetBool("IsDead",true);
+        animator.SetTrigger("Died");
+    }
+    public void PlayReviveAnim()
+    {
+        animator.SetBool("IsDead", false);
     }
     public void AimDirection(float mouseY)
     {

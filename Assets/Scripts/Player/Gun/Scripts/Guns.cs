@@ -24,7 +24,7 @@ public class GunTypes
     [Header("Effects")]
     public ParticleSystem shootingSystem;
     public ParticleSystem ImpactParticleSystem;
-    public TrailRenderer bulletTrail;
+    public GameObject bulletVFX;
 
     [Header("Gun capacity/reloading")]
     public int maxAmmo;
