@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -35,6 +36,21 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
         }
         MatchManager.localInstance.PlayerToSpawnLocation(gameObject);
     }
+    private void OnEnable()
+    {
+        MatchManager.localInstance.OnFinishedMatch += FinishedMatch;
+    }
+    private void OnDisable()
+    {
+        MatchManager.localInstance.OnFinishedMatch -= FinishedMatch;
+    }
+
+    private void FinishedMatch()
+    {
+        playerMovement.enabled = false;
+        inputManager.enabled = false;
+    }
+
     public void Buff(float damageMultiplierBuff, float speedMultiplierBuff, float armorBuff)
     {
 

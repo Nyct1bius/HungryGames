@@ -12,13 +12,16 @@ public class MatchManager : NetworkBehaviour
     [SerializeField] private GameObject[] victoryTabs;
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private int pointsToWin;
+    [SerializeField] private GameObject hud;
     private int index;
     private Transform currentPlayer;
 
 
     private NetworkVariable<int> hostPoints = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     private NetworkVariable<int> clientPoints = new NetworkVariable<int>(0,NetworkVariableReadPermission.Everyone,NetworkVariableWritePermission.Owner);
-    public override void OnNetworkSpawn()
+
+    public event Action OnFinishedMatch;
+    private void Awake()
     {
         localInstance = this;
     }
@@ -55,30 +58,30 @@ public class MatchManager : NetworkBehaviour
         Debug.Log(playerID);
         if (playerID == 0)
         {
-            if(clientPoints.Value == pointsToWin)
+            clientPoints.Value++;
+
+            if (clientPoints.Value == pointsToWin)
             {
-                Debug.Log("Winner");
-                SetActiveVictoryClientRpc(1);
+                AtualizePlacarClientServerRpc(clientPoints.Value);
+                SpawnVictoryClientRpc(1);
             }
             else
-            {
-                clientPoints.Value++;
+            {            
                 AtualizePlacarClientServerRpc(clientPoints.Value);
-                Debug.Log(clientPoints.Value);
             }
             
         }
         else
         {
-            if(hostPoints.Value == pointsToWin)
+            hostPoints.Value++;
+            if (hostPoints.Value == pointsToWin)
             {
-                SetActiveVictoryClientRpc(0);
+                AtualizePlacarHostServerRpc(hostPoints.Value);
+                SpawnVictoryClientRpc(0);
             }
             else
-            {
-                hostPoints.Value++;
+            {       
                 AtualizePlacarHostServerRpc(hostPoints.Value);
-                Debug.Log(hostPoints.Value);
             }
         }
     }
@@ -103,9 +106,10 @@ public class MatchManager : NetworkBehaviour
         clientPlacar.text = value.ToString();
     }
     [ClientRpc]
-    private void SetActiveVictoryClientRpc(int winnerPlayer)
+    private void SpawnVictoryClientRpc(int winnerPlayer)
     {
-        victoryTabs[winnerPlayer].SetActive(true);
+        Instantiate(victoryTabs[winnerPlayer], hud.transform);
+        OnFinishedMatch?.Invoke();
     }
     IEnumerator RevivePlayer(GameObject deadPlayer, GameObject playerMesh)
     {
