@@ -12,7 +12,7 @@ public class AStarGrid : MonoBehaviour
     float unitDiameter;
     int gridSizeX, gridSizeY, gridSizeZ;
 
-    private void Start()
+    private void Awake()
     {
         unitDiameter = UnitRadius * 2;
 

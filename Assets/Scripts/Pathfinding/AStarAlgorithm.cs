@@ -1,6 +1,7 @@
-using System;
+ using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class AStarAlgorithm : MonoBehaviour
@@ -16,22 +17,20 @@ public class AStarAlgorithm : MonoBehaviour
         grid = GetComponent<AStarGrid>();
     }
 
-    public void StartFindPath (Vector3 startPos, Vector3 targetPos)
+    private void Update()
     {
-        StartCoroutine(FindPath(startPos, targetPos));
+        
     }
 
-    IEnumerator FindPath(Vector3 startPos, Vector3 targetPos)
-    {
-        Vector3[] waypoints = new Vector3[0];
-        bool success = false;   
-        
+    public List<GridUnit> FindPath(Vector3 startPos, Vector3 targetPos)
+    {         
         GridUnit startUnit = grid.UnitFromWorldPoint(startPos);
         GridUnit targetUnit = grid.UnitFromWorldPoint(targetPos);
 
+        List<GridUnit> path = new List<GridUnit>();
+
         if (startUnit.IsWalkable && targetUnit.IsWalkable)
         {
-
             List<GridUnit> openUnits = new List<GridUnit>();
             HashSet<GridUnit> closedUnits = new HashSet<GridUnit>();
 
@@ -54,8 +53,8 @@ public class AStarAlgorithm : MonoBehaviour
 
                 if (currentUnit == targetUnit)
                 {
-                    success = true;
-                    break;
+                    RetracePath(startUnit, targetUnit, ref path);
+                    return path;
                 }
 
                 foreach (GridUnit neighbour in grid.GetNeighbours(currentUnit))
@@ -82,17 +81,11 @@ public class AStarAlgorithm : MonoBehaviour
             }
         }
 
-        yield return null;
-
-        if (success)
-        {
-            waypoints = RetracePath(startUnit, targetUnit);
-        }
+        return path;
     }
 
-    Vector3[] RetracePath(GridUnit startUnit, GridUnit endUnit)
+    void RetracePath(GridUnit startUnit, GridUnit endUnit, ref List<GridUnit> path)
     {
-        List<GridUnit> path = new List<GridUnit>();
         GridUnit currentUnit = endUnit;
 
         while (currentUnit != startUnit)
@@ -101,32 +94,8 @@ public class AStarAlgorithm : MonoBehaviour
             currentUnit = currentUnit.Parent;
         }
 
-        Vector3[] waypoints = SimplifyPath(path);
-
-        Array.Reverse(waypoints);     
-        return waypoints;
+        path.Reverse();
     }
-
-    Vector3[] SimplifyPath(List<GridUnit> path)
-    {
-        List<Vector3> waypoints = new List<Vector3>();
-        Vector2 directionOld = Vector2.zero;
-
-        for (int i = 0; i < path.Count; i++)
-        {
-            Vector2 directionNew = new Vector2(path[i - 1].GridX - path[i].GridX, path[i - 1].GridZ - path[i].GridZ);
-
-            if (directionNew != directionOld)
-            {
-                waypoints.Add(path[i].WorldPos);
-            }
-
-            directionOld = directionNew;    
-        }
-
-        return waypoints.ToArray();
-    }
-
     int GetDistance (GridUnit unitA, GridUnit unitB)
     {
         int distX = Mathf.Abs(unitA.GridX - unitB.GridX);
