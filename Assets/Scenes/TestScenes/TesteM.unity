@@ -19331,9 +19331,9 @@ MonoBehaviour:
   m_MaxConnectAttempts: 60
   m_DisconnectTimeoutMS: 30000
   ConnectionData:
-    Address: 127.0.0.1
-    Port: 7777
-    ServerListenAddress: 127.0.0.1
+    Address: 172.17.14.4
+    Port: 5055
+    ServerListenAddress: 0.0.0.0
   DebugSimulator:
     PacketDelayMS: 0
     PacketJitterMS: 0
@@ -19374,7 +19374,7 @@ MonoBehaviour:
     EnableNetworkLogs: 1
     OldPrefabList: []
   RunInBackground: 1
-  LogLevel: 1
+  LogLevel: 0
 --- !u!4 &1666545499
 Transform:
   m_ObjectHideFlags: 0
@@ -22997,7 +22997,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1986633383
 Transform:
   m_ObjectHideFlags: 0
@@ -24563,6 +24563,14 @@ PrefabInstance:
     - target: {fileID: 6515119622789145104, guid: 225f675902b11a94887b0bf31fbf6e0a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7170253184830453744, guid: 225f675902b11a94887b0bf31fbf6e0a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -3.6808167
+      objectReference: {fileID: 0}
+    - target: {fileID: 8516201473927825967, guid: 225f675902b11a94887b0bf31fbf6e0a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -26.637634
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

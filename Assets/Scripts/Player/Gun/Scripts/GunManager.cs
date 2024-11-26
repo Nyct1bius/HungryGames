@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -15,6 +16,8 @@ public class GunManager : NetworkBehaviour
     [SerializeField] private Guns guns;
     [SerializeField] private PlayerVisual playerAnimations;
     [SerializeField] private InputManager inputManager;
+    [SerializeField] private TextMeshProUGUI bulletCounterUI;
+    [SerializeField] private TextMeshProUGUI gunNameUI;
     private bool canShoot = true;
     private int currentAmmo;
     private RectTransform crosshair;
@@ -74,7 +77,7 @@ public class GunManager : NetworkBehaviour
             }
             //guns.types[currentBulletIndex].shootingSystem.Play();
             Debug.Log(currentAmmo);
-
+            bulletCounterUI.text = currentAmmo.ToString();
             StartCoroutine(FireRateDelay(guns.types[currentBulletIndex].fireRate));
         }
 
