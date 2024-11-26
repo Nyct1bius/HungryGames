@@ -69,7 +69,7 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
                 Death();
             }
         }
-    
+
     }
     private void Death()
     {
@@ -77,7 +77,7 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
         playerVisual.PlayDeathAnim();
         playerMovement.enabled = false;
         inputManager.enabled = false;
-        MatchManager.localInstance.PlayerDied(gameObject, playerMesh,OwnerClientId);
+        MatchManager.localInstance.PlayerDied(gameObject, playerMesh, OwnerClientId);
     }
     public void Revive()
     {
@@ -91,16 +91,16 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
     }
     public void Debuff(float damageMultiplierDebuff, float speedMultiplierDebuff, float armorDebuff)
     {
-        
+
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (!IsOwner) return;
         DespawnTrail despawnTrail = collision.gameObject.GetComponent<DespawnTrail>();
-        int currentBulletIndex = despawnTrail.bulletIndex;
-        if(despawnTrail != null)
+        if (despawnTrail != null)
         {
+            int currentBulletIndex = despawnTrail.bulletIndex;
             Damage(guns.types[currentBulletIndex].damage);
         }
     }
