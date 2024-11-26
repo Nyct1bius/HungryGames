@@ -3,7 +3,12 @@ guid: d2b5b9ccaf12add4b8437422702a69c8
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Box2_Smooth_Baked
+    second: {fileID: 2100000, guid: 45edfc414529573499f147be4a4067f9, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

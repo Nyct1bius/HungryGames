@@ -3,7 +3,12 @@ guid: 173e6f278ad3a2d4cb00888fa8eba3f9
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bones_Baked.001
+    second: {fileID: 2100000, guid: 56550405209637845989c66061f4c4f0, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

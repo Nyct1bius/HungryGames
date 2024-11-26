@@ -3,7 +3,22 @@ guid: c07cab7ce5e6365429a5b401be079fdf
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Barrel_Baked.002
+    second: {fileID: 2100000, guid: 3db587387373254409b800286f0c5687, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Dark iron.004
+    second: {fileID: 2100000, guid: 3db587387373254409b800286f0c5687, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Procedural Wood.002
+    second: {fileID: 2100000, guid: 3db587387373254409b800286f0c5687, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
