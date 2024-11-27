@@ -3,7 +3,12 @@ guid: 7788fbea588b77d4d881c83a59dc42b0
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PennePistol.001
+    second: {fileID: 8842976037673627918, guid: 8c665fcd00f10e04fae6165bd24fb7bf, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
