@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using Unity.Netcode;
 
 public class Load : MonoBehaviour
 {
@@ -34,7 +35,7 @@ public class Load : MonoBehaviour
     private IEnumerator EsperaSegundos()
     {
         yield return new WaitForSeconds(5);
-
-        SceneManager.LoadScene("TesteM");
+ 
+       NetworkManager.Singleton.SceneManager.LoadScene("Lobby",LoadSceneMode.Single);
     }
 }

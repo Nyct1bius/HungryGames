@@ -123,6 +123,7 @@ public class GunManager : NetworkBehaviour
         canReload = true; 
         canShoot = true;
         currentAmmo = guns.types[currentBulletIndex].maxAmmo;
+        bulletCounterUI.text = currentAmmo.ToString();
     }
     #endregion
     #region Move Bullet To Target

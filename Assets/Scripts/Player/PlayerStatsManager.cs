@@ -34,7 +34,6 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
 
             healthBar.gameObject.SetActive(false);
         }
-        MatchManager.localInstance.PlayerToSpawnLocation(gameObject);
     }
     private void OnEnable()
     {

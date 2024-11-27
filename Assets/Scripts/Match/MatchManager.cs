@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MatchManager : NetworkBehaviour
 {
@@ -13,6 +15,7 @@ public class MatchManager : NetworkBehaviour
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private int pointsToWin;
     [SerializeField] private GameObject hud;
+    [SerializeField] private Transform playerPrefab;
     private int index;
     private Transform currentPlayer;
 
@@ -21,22 +24,45 @@ public class MatchManager : NetworkBehaviour
     private NetworkVariable<int> clientPoints = new NetworkVariable<int>(0,NetworkVariableReadPermission.Everyone,NetworkVariableWritePermission.Owner);
 
     public event Action OnFinishedMatch;
+    
     private void Awake()
     {
         localInstance = this;
     }
-    public void PlayerToSpawnLocation(GameObject player)
+    public override void OnNetworkSpawn()
+    {
+        if (IsServer)
+        {
+            NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneManager_OnLoadEventCompleted;
+        }
+    }
+    private void OnDisable()
+    {
+        NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= SceneManager_OnLoadEventCompleted;
+    }
+
+    private void SceneManager_OnLoadEventCompleted(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
+    {
+       foreach(ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
+        {
+            Transform playerTransform = Instantiate(playerPrefab);
+            playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
+            PlayerToSpawnLocation(playerTransform);
+        }
+    }
+
+    public void PlayerToSpawnLocation(Transform player)
     {
         
         if (index < spawnPoints.Length)
         {
-            player.transform.position = spawnPoints[index].position;
+            player.position = spawnPoints[index].position;
             index++;
         }
         else
         {
             index = 0;
-            player.transform.position = spawnPoints[index].position;
+            player.position = spawnPoints[index].position;
             index++;
         }
 
@@ -64,6 +90,7 @@ public class MatchManager : NetworkBehaviour
             {
                 AtualizePlacarClientServerRpc(clientPoints.Value);
                 SpawnVictoryClientRpc(1);
+                StartCoroutine(waitToGoBackToLobby());
             }
             else
             {            
@@ -78,12 +105,18 @@ public class MatchManager : NetworkBehaviour
             {
                 AtualizePlacarHostServerRpc(hostPoints.Value);
                 SpawnVictoryClientRpc(0);
+                StartCoroutine(waitToGoBackToLobby());
             }
             else
             {       
                 AtualizePlacarHostServerRpc(hostPoints.Value);
             }
         }
+    }
+    IEnumerator waitToGoBackToLobby()
+    {
+        yield return new WaitForSeconds(3);
+        BackToLobbyServerRpc();
     }
     [ServerRpc]
     private void AtualizePlacarHostServerRpc(int value)
@@ -110,6 +143,11 @@ public class MatchManager : NetworkBehaviour
     {
         Instantiate(victoryTabs[winnerPlayer], hud.transform);
         OnFinishedMatch?.Invoke();
+    }
+    [ServerRpc]
+    private void BackToLobbyServerRpc()
+    {
+        NetworkManager.Singleton.SceneManager.LoadScene("Lobby", LoadSceneMode.Single);
     }
     IEnumerator RevivePlayer(GameObject deadPlayer, GameObject playerMesh)
     {
