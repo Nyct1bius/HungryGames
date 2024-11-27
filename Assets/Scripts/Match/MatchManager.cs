@@ -9,13 +9,18 @@ using UnityEngine.SceneManagement;
 public class MatchManager : NetworkBehaviour
 {
     public static MatchManager localInstance;
+    [Header("UI")]
     [SerializeField] private TextMeshProUGUI hostPlacar;
     [SerializeField] private TextMeshProUGUI clientPlacar;
+    [SerializeField] private TextMeshProUGUI startMatchCountdownUI;
+    [SerializeField] private GameObject counterPanel;
     [SerializeField] private GameObject[] victoryTabs;
+    [Header("Match variables")]
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private int pointsToWin;
     [SerializeField] private GameObject hud;
     [SerializeField] private Transform playerPrefab;
+    [SerializeField] private int timeToStartMatch;
     private int index;
     private Transform currentPlayer;
 
@@ -23,7 +28,8 @@ public class MatchManager : NetworkBehaviour
     private NetworkVariable<int> hostPoints = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     private NetworkVariable<int> clientPoints = new NetworkVariable<int>(0,NetworkVariableReadPermission.Everyone,NetworkVariableWritePermission.Owner);
 
-    public event Action OnFinishedMatch;
+
+    public event Action OnFinishedMatch, OnStartMatch;
     
     private void Awake()
     {
@@ -31,10 +37,12 @@ public class MatchManager : NetworkBehaviour
     }
     public override void OnNetworkSpawn()
     {
+        NetworkManager.Singleton.NetworkConfig.ClientConnectionBufferTimeout = 3000;
         if (IsServer)
         {
             NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneManager_OnLoadEventCompleted;
         }
+        StartCoroutine(waitToStartMatch());
     }
     private void OnDisable()
     {
@@ -46,26 +54,26 @@ public class MatchManager : NetworkBehaviour
        foreach(ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
         {
             Transform playerTransform = Instantiate(playerPrefab);
+            playerTransform.position = spawnPoints[index].position;
+            index++;
             playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
-            PlayerToSpawnLocation(playerTransform);
         }
     }
 
-    public void PlayerToSpawnLocation(Transform player)
+    IEnumerator waitToStartMatch()
     {
-        
-        if (index < spawnPoints.Length)
+        int time = timeToStartMatch;
+        startMatchCountdownUI.text = time.ToString();
+        while (time > 0)
         {
-            player.position = spawnPoints[index].position;
-            index++;
+            startMatchCountdownUI.text = time.ToString();
+            yield return new WaitForSeconds(1f);
+            time --;
         }
-        else
-        {
-            index = 0;
-            player.position = spawnPoints[index].position;
-            index++;
-        }
-
+        startMatchCountdownUI.text = "DUEL!";
+       yield return new WaitForSeconds(1f);
+        counterPanel.SetActive(false);
+         OnStartMatch?.Invoke();
     }
 
     public void PlayerDied(GameObject deadPlayer,GameObject playerMesh,ulong playerID)

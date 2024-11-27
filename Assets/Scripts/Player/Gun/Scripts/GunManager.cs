@@ -153,7 +153,7 @@ public class GunManager : NetworkBehaviour
     {
         GameObject bulletTrail = Instantiate(guns.types[currentBulletIndex].bulletVFX, bulletSpawnPoint.position, Quaternion.identity);
         bulletTrail.GetComponent<DespawnTrail>().bulletIndex = currentBulletIndex;
-        bulletTrail.GetComponent<NetworkObject>().Spawn();
+        bulletTrail.GetComponent<NetworkObject>().Spawn(true);
         StartCoroutine(MoveTrailToHitServer(bulletTrail, endPos));
     }
 

@@ -155,7 +155,6 @@ public class PlayerMovement : NetworkBehaviour
         vCamera.Priority = 10;
         PlayerCameraManager cameraManager = fpsCameraRef.GetComponent<PlayerCameraManager>();
         cameraManager.SetupCameraVariables(this.gameObject, playerHeadRef,playerBodyRef, inputManager, sensibility, crosshair, gunManager, vCamera,animationManager);
-        SpawnCamerasServerRpc();
         GameObject[] cameras = GameObject.FindGameObjectsWithTag("MainCamera");
         foreach (GameObject camera in cameras)
         {
@@ -164,12 +163,5 @@ public class PlayerMovement : NetworkBehaviour
                 camera.SetActive(false);
             }
         }
-    }
-
-    [ServerRpc]
-    private void SpawnCamerasServerRpc()
-    {
-        NetworkObject nObjectCam2 = mainCameraRef.GetComponent<NetworkObject>();
-        nObjectCam2.Spawn();
     }
 }

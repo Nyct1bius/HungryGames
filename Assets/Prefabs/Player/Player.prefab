@@ -3063,9 +3063,6 @@ MonoBehaviour:
   healthBar: {fileID: 2717158976676743699}
   maxHealth: 100
   maxSpeed: 0
-  playerLocalLayer:
-    serializedVersion: 2
-    m_Bits: 256
   playerMovement: {fileID: 422153264897805532}
   inputManager: {fileID: 3782179939153206032}
   playerVisual: {fileID: 5404809578374238528}

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerStatsManager : NetworkBehaviour, IBuffable
@@ -9,7 +10,6 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
     [SerializeField] public HealthBar healthBar;
     [SerializeField] public int maxHealth;
     [SerializeField] public int maxSpeed;
-    [SerializeField] private LayerMask playerLocalLayer;
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private InputManager inputManager;
     [SerializeField] private PlayerVisual playerVisual;
@@ -25,23 +25,28 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
 
         if (IsOwner)
         {
-            // gameObject.layer = playerLocalLayer;
             currentHealth = maxHealth;
             healthBar.SetMaxHealth(currentHealth);
         }
         else
         {
-
             healthBar.gameObject.SetActive(false);
         }
+    }
+    private void Start()
+    {
+        playerMovement.enabled = false;
+        inputManager.enabled = false;
     }
     private void OnEnable()
     {
         MatchManager.localInstance.OnFinishedMatch += FinishedMatch;
+        MatchManager.localInstance.OnStartMatch += MatchStart;
     }
     private void OnDisable()
     {
         MatchManager.localInstance.OnFinishedMatch -= FinishedMatch;
+        MatchManager.localInstance.OnStartMatch -= MatchStart;
     }
 
     private void FinishedMatch()
@@ -78,6 +83,11 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
         inputManager.enabled = false;
         MatchManager.localInstance.PlayerDied(gameObject, playerMesh, OwnerClientId);
     }
+    private void MatchStart()
+    {
+        playerMovement.enabled = true;
+        inputManager.enabled = true;
+    }
     public void Revive()
     {
         currentHealth = maxHealth;
@@ -91,16 +101,5 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
     public void Debuff(float damageMultiplierDebuff, float speedMultiplierDebuff, float armorDebuff)
     {
 
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (!IsOwner) return;
-        DespawnTrail despawnTrail = collision.gameObject.GetComponent<DespawnTrail>();
-        if (despawnTrail != null)
-        {
-            int currentBulletIndex = despawnTrail.bulletIndex;
-            Damage(guns.types[currentBulletIndex].damage);
-        }
     }
 }

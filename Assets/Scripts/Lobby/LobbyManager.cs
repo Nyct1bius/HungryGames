@@ -17,6 +17,8 @@ public class LobbyManager : NetworkBehaviour
         {
             NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneManager_OnLoadEventCompleted;
         }
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
     private void OnDisable()
     {
