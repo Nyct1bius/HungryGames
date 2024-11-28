@@ -20,6 +20,8 @@ public class GamePlayUI : MonoBehaviour
     public int _score = 0;
     public int _score2 = 0;
 
+    public bool _isPause = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,9 +31,15 @@ public class GamePlayUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("p"))
+        if (Input.GetKeyDown("p") || Input.GetKeyDown(KeyCode.Escape) && !_isPause)
         {
             _menuScreen.SetActive(true);
+            _isPause = true;
+        }
+        else if(_isPause && Input.GetKeyDown("p") || Input.GetKeyDown(KeyCode.Escape))
+        {
+            _menuScreen.SetActive(false);
+            _isPause = false;
         }
     }
 
