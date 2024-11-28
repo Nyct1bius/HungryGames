@@ -15,9 +15,10 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
     [SerializeField] private PlayerVisual playerVisual;
     [SerializeField] private Guns guns;
     [SerializeField] private GameObject playerMesh;
+    [SerializeField] private LayerMask bulletLayer;
+
+
     private int currentHealth;
-
-
     private bool isDead;
 
     public override void OnNetworkSpawn()
@@ -73,7 +74,6 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
                 Death();
             }
         }
-
     }
     private void Death()
     {
@@ -102,4 +102,5 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
     {
 
     }
+  
 }

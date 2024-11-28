@@ -30,8 +30,8 @@ public class LobbyManager : NetworkBehaviour
         foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
         {
             Transform playerTransform = Instantiate(playerPrefab);
-            playerTransform.GetComponent<NetworkObject>().Spawn(true);
             PlayerToSpawnLocation(playerTransform);
+            playerTransform.GetComponent<NetworkObject>().Spawn(true);
         }
     }
     public void PlayerToSpawnLocation(Transform player)

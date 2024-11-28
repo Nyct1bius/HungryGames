@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using TMPro;
 using Unity.Netcode;
 using Unity.VisualScripting;
@@ -55,7 +56,7 @@ public class GunManager : NetworkBehaviour
             Debug.Log("Fire");
         }
     }
- 
+
     #region Shoot Logic
 
     private void Shoot()
@@ -69,11 +70,13 @@ public class GunManager : NetworkBehaviour
             {
                 playerAnimations.PlayShootAnimation();
                 SpawnTrailServerRpc(hit.point);
-                StartCoroutine(WaitToDisplayBulletHit(hit));
-            }
-            else
-            {
-                SpawnTrailServerRpc(mouseWorldPos.direction);
+                StartCoroutine(WaitToDisplayBulletHit(hit, hit.collider.gameObject));
+                if (hit.transform.TryGetComponent<PlayerStatsManager>(out PlayerStatsManager statsManager))
+                {
+                    ulong NetworkObjectId = hit.transform.GetComponent<NetworkObject>().NetworkObjectId;
+                    HitServerRpc(NetworkObjectId, guns.types[currentBulletIndex].damage);
+                }
+
             }
             //guns.types[currentBulletIndex].shootingSystem.Play();
             Debug.Log(currentAmmo);
@@ -100,7 +103,7 @@ public class GunManager : NetworkBehaviour
                 StartCoroutine(Reload(guns.types[currentBulletIndex].reloadTime));
 
             }
-         
+
         }
     }
     private void CallReloadRoutine()
@@ -120,7 +123,7 @@ public class GunManager : NetworkBehaviour
         Debug.Log("Reloading");
         canReload = false;
         yield return new WaitForSeconds(reloadTime);
-        canReload = true; 
+        canReload = true;
         canShoot = true;
         currentAmmo = guns.types[currentBulletIndex].maxAmmo;
         bulletCounterUI.text = currentAmmo.ToString();
@@ -134,20 +137,31 @@ public class GunManager : NetworkBehaviour
         while (time < 0.5f)
         {
             trail.transform.position = Vector3.Lerp(startPosition, endPos, time);
-            time += Time.deltaTime/0.1f;
+            time += Time.deltaTime / 0.1f;
             yield return null;
         }
         trail.transform.position = endPos;
     }
-    private IEnumerator WaitToDisplayBulletHit(RaycastHit hit)
+    private IEnumerator WaitToDisplayBulletHit(RaycastHit hit, GameObject target)
     {
         yield return new WaitForSeconds(0.15f);
-        SpawnBulletImpactServerRpc(hit.point, hit.normal);      
+        SpawnBulletImpactServerRpc(hit.point, hit.normal);
     }
     #endregion
     #region ClientCalls
 
-
+    [ServerRpc]
+    private void HitServerRpc(ulong networkObjectID, int damage)
+    {
+        HitClientRpc(networkObjectID, damage);
+    }
+    [ClientRpc]
+    private void HitClientRpc(ulong networkObjectID, int damage)
+    {
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(networkObjectID,out NetworkObject networkObject);
+        networkObject.gameObject.TryGetComponent<PlayerStatsManager>(out PlayerStatsManager stats);
+        stats.Damage(damage);
+    }
     [ServerRpc]
     private void SpawnTrailServerRpc(Vector3 endPos)
     {

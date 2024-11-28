@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7089217113386100031}
   - component: {fileID: 4857618122547545121}
   - component: {fileID: 8490763683494679885}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Streched Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4841,7 +4841,7 @@ GameObject:
   - component: {fileID: 3993089399189225634}
   - component: {fileID: 4190641040087774531}
   - component: {fileID: 5402237538916228038}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9673,7 +9673,7 @@ GameObject:
   - component: {fileID: 5068624684346766218}
   - component: {fileID: 5756374891113757539}
   - component: {fileID: 8596257781671013202}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bullet_VFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9794,7 +9794,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4610644564966993725}
   - component: {fileID: 5574755924018594223}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BulletTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}

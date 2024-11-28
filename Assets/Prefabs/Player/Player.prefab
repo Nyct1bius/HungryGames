@@ -3068,6 +3068,9 @@ MonoBehaviour:
   playerVisual: {fileID: 5404809578374238528}
   guns: {fileID: 11400000, guid: 3c3e09598f88a7347836d7f1ac648a64, type: 2}
   playerMesh: {fileID: 9205093999630723383}
+  bulletLayer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!114 &422153264897805532
 MonoBehaviour:
   m_ObjectHideFlags: 0
