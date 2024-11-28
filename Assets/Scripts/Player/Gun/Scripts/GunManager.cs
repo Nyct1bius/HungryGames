@@ -73,8 +73,12 @@ public class GunManager : NetworkBehaviour
                 StartCoroutine(WaitToDisplayBulletHit(hit, hit.collider.gameObject));
                 if (hit.transform.TryGetComponent<PlayerStatsManager>(out PlayerStatsManager statsManager))
                 {
-                    ulong NetworkObjectId = hit.transform.GetComponent<NetworkObject>().NetworkObjectId;
-                    HitServerRpc(NetworkObjectId, guns.types[currentBulletIndex].damage);
+                    if(hit.transform != gameObject.transform)
+                    {
+                        ulong NetworkObjectId = hit.transform.GetComponent<NetworkObject>().NetworkObjectId;
+                        HitServerRpc(NetworkObjectId, guns.types[currentBulletIndex].damage);
+                    }
+               
                 }
 
             }

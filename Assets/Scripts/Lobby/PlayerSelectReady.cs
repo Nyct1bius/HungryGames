@@ -13,7 +13,6 @@ public class PlayerSelectReady : NetworkBehaviour
     private void Awake()
     {
         playerReadyDictionary = new Dictionary<ulong, bool>();
-        AttPlayerReadyCounterClientRpc(playersReady.Value);
     }
     public void SetPlayerReady()
     {

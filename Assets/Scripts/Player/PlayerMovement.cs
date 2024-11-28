@@ -17,6 +17,7 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private Transform cameraOffset;
     [SerializeField] private GameObject fpsCameraPrefab;
     [SerializeField] private Transform playerHeadRef;
+    [SerializeField] private Transform alternativeHead;
     [SerializeField] private CinemachineVirtualCamera vCamera;
     [SerializeField] private GunManager gunManager;
     [Range(0, 10)]
@@ -154,7 +155,7 @@ public class PlayerMovement : NetworkBehaviour
         fpsCameraRef = Instantiate(fpsCameraPrefab, playerHeadRef.position, Quaternion.identity);
         vCamera.Priority = 10;
         PlayerCameraManager cameraManager = fpsCameraRef.GetComponent<PlayerCameraManager>();
-        cameraManager.SetupCameraVariables(this.gameObject, playerHeadRef,playerBodyRef, inputManager, sensibility, crosshair, gunManager, vCamera,animationManager);
+        cameraManager.SetupCameraVariables(this.gameObject, playerHeadRef, alternativeHead, playerBodyRef, inputManager, sensibility, crosshair, gunManager, vCamera,animationManager);
         GameObject[] cameras = GameObject.FindGameObjectsWithTag("MainCamera");
         foreach (GameObject camera in cameras)
         {
