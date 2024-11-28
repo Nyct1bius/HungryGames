@@ -96,13 +96,13 @@ public class MatchManager : NetworkBehaviour
 
             if (clientPoints.Value == pointsToWin)
             {
-                AtualizePlacarClientServerRpc(clientPoints.Value);
+                AtualizePlacarClientRpc(clientPoints.Value);
                 SpawnVictoryClientRpc(1);
-                StartCoroutine(waitToGoBackToLobby());
+                StartCoroutine(WaitToGoBackToLobby());
             }
             else
-            {            
-                AtualizePlacarClientServerRpc(clientPoints.Value);
+            {
+                AtualizePlacarClientRpc(clientPoints.Value);
             }
             
         }
@@ -111,40 +111,31 @@ public class MatchManager : NetworkBehaviour
             hostPoints.Value++;
             if (hostPoints.Value == pointsToWin)
             {
-                AtualizePlacarHostServerRpc(hostPoints.Value);
+                AtualizePlacarHostClientRpc(hostPoints.Value);
                 SpawnVictoryClientRpc(0);
-                StartCoroutine(waitToGoBackToLobby());
+                StartCoroutine(WaitToGoBackToLobby());
             }
             else
-            {       
-                AtualizePlacarHostServerRpc(hostPoints.Value);
+            {
+                AtualizePlacarHostClientRpc(hostPoints.Value);
             }
         }
     }
-    IEnumerator waitToGoBackToLobby()
+    IEnumerator WaitToGoBackToLobby()
     {
         yield return new WaitForSeconds(3);
         BackToLobbyServerRpc();
     }
-    [ServerRpc]
-    private void AtualizePlacarHostServerRpc(int value)
-    {
-        AtualizePlacarHostClientRpc(value);
-    }
+
     [ClientRpc]
     private void AtualizePlacarHostClientRpc(int value)
     {
-        hostPlacar.text = value.ToString();
-    }
-    [ServerRpc]
-    private void AtualizePlacarClientServerRpc(int value)
-    {
-        AtualizePlacarClientRpc(value);
+        hostPlacar.text = $"{value}";
     }
     [ClientRpc]
     private void AtualizePlacarClientRpc(int value)
     {
-        clientPlacar.text = value.ToString();
+        clientPlacar.text = $"{value}";
     }
     [ClientRpc]
     private void SpawnVictoryClientRpc(int winnerPlayer)
