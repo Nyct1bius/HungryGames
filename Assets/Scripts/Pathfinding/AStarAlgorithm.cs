@@ -19,7 +19,7 @@ public class AStarAlgorithm : NetworkBehaviour
     }
 
     public List<GridUnit> FindPath(Vector3 startPos, Vector3 targetPos)
-    {         
+    {
         GridUnit startUnit = grid.UnitFromWorldPoint(startPos);
         GridUnit targetUnit = grid.UnitFromWorldPoint(targetPos);
 

@@ -15,7 +15,6 @@ public class AStarGrid : NetworkBehaviour
 
     private void Awake()
     {
-        if (!IsServer) return;
         unitDiameter = UnitRadius * 2;
 
         gridSizeX = Mathf.RoundToInt(GridWorldSize.x / unitDiameter);

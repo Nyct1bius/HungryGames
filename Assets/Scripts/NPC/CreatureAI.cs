@@ -16,6 +16,7 @@ public class CreatureAI : NetworkBehaviour
 
     private void Awake()
     {
+        if(!IsHost) return;
         chosenPathfindingTarget = PathfindingTargets[Random.Range(0, PathfindingTargets.Length)];
     }
 
@@ -26,7 +27,7 @@ public class CreatureAI : NetworkBehaviour
 
     private void Update()
     {
-        if (!IsServer) return;
+        if (!IsHost) return;
         if (timeToMove > 0)
         {
             timeToMove -= Time.deltaTime;
