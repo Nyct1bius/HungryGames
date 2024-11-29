@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class AStarGrid : MonoBehaviour
+public class AStarGrid : NetworkBehaviour
 {
     public LayerMask ObstacleMask;
     public Vector3 GridWorldSize;
@@ -14,6 +15,7 @@ public class AStarGrid : MonoBehaviour
 
     private void Awake()
     {
+        if (!IsServer) return;
         unitDiameter = UnitRadius * 2;
 
         gridSizeX = Mathf.RoundToInt(GridWorldSize.x / unitDiameter);

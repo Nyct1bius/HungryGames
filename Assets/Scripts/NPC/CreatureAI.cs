@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class CreatureAI : MonoBehaviour
+public class CreatureAI : NetworkBehaviour
 {
     public Transform[] PathfindingTargets;
     private Transform chosenPathfindingTarget;
@@ -25,6 +26,7 @@ public class CreatureAI : MonoBehaviour
 
     private void Update()
     {
+        if (!IsServer) return;
         if (timeToMove > 0)
         {
             timeToMove -= Time.deltaTime;

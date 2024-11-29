@@ -2,9 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Unity.Netcode;
 using UnityEngine;
 
-public class AStarAlgorithm : MonoBehaviour
+public class AStarAlgorithm : NetworkBehaviour
 {
     public CreatureAI Creature;
     
@@ -15,11 +16,6 @@ public class AStarAlgorithm : MonoBehaviour
     private void Awake()
     {
         grid = GetComponent<AStarGrid>();
-    }
-
-    private void Update()
-    {
-        
     }
 
     public List<GridUnit> FindPath(Vector3 startPos, Vector3 targetPos)
