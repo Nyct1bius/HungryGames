@@ -35,7 +35,7 @@ public class PlayerSelectReady : NetworkBehaviour
         AttPlayerReadyCounterClientRpc(playersReady.Value);
         if (allActivesClientsReady)
         {
-            NetworkManager.Singleton.SceneManager.LoadScene("TesteM", LoadSceneMode.Single);
+            NetworkManager.Singleton.SceneManager.LoadScene("Gameplay", LoadSceneMode.Single);
         }
     }
     [ClientRpc]
