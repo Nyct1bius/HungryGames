@@ -4,32 +4,46 @@ using UnityEngine;
 
 public class CreatureAI : MonoBehaviour
 {
-    public Transform PathfindingTarget;
-    public float MovementSpeed, TimeToMove;
+    public Transform[] PathfindingTargets;
+    private Transform chosenPathfindingTarget;
+    public float MovementSpeed;
+    private float timeToMove;
     Vector3[] path;
     int pathfindingTargetIndex;
     public AStarAlgorithm AStarAlgorithm;
 
+
+    private void Awake()
+    {
+        chosenPathfindingTarget = PathfindingTargets[Random.Range(0, PathfindingTargets.Length)];
+    }
+
     private void Start()
     {
-        FindPath();
+        timeToMove = Random.Range(7, 15);
     }
 
     private void Update()
     {
-        if (TimeToMove > 0)
+        if (timeToMove > 0)
         {
-            TimeToMove -= Time.deltaTime;
+            timeToMove -= Time.deltaTime;
         }
-        else
+        if (timeToMove <= 0)
         {
-            
+            chosenPathfindingTarget = PathfindingTargets[Random.Range(0, PathfindingTargets.Length)];
+
+            FindPath();
         }
+
+        Debug.Log(timeToMove);
     }
 
     void FindPath()
     {
-        List<GridUnit> gridPath = AStarAlgorithm.FindPath(transform.position, PathfindingTarget.position);
+        Debug.Log("Find Path");
+        
+        List<GridUnit> gridPath = AStarAlgorithm.FindPath(transform.position, chosenPathfindingTarget.position);
 
         path = new Vector3[gridPath.Count];
         for (int i = 0; i < gridPath.Count; i++)
@@ -39,6 +53,8 @@ public class CreatureAI : MonoBehaviour
 
         pathfindingTargetIndex = 0;
 
+        timeToMove = Random.Range(10, 21);
+
         if (path.Length > 0)
         {
             StartCoroutine(FollowPath());
@@ -47,6 +63,8 @@ public class CreatureAI : MonoBehaviour
 
     IEnumerator FollowPath()
     {
+        Debug.Log("Follow Path");
+        
         Vector3 currentUnit = path[0];
 
         while (true)
