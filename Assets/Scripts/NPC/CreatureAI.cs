@@ -14,14 +14,9 @@ public class CreatureAI : NetworkBehaviour
     public AStarAlgorithm AStarAlgorithm;
 
 
-    private void Awake()
+    public override void OnNetworkSpawn()
     {
-        if(!IsHost) return;
         chosenPathfindingTarget = PathfindingTargets[Random.Range(0, PathfindingTargets.Length)];
-    }
-
-    private void Start()
-    {
         timeToMove = Random.Range(7, 15);
     }
 
