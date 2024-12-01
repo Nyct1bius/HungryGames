@@ -29,9 +29,4 @@ public class GridUnit
             return GCost + HCost;
         }
     }
-
-    public override string ToString()
-    {
-        return GridX + "," + GridY + "," + GridZ;
-    }
 }

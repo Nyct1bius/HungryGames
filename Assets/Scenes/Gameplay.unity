@@ -43782,6 +43782,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 225f675902b11a94887b0bf31fbf6e0a, type: 3}
+--- !u!114 &4250022481887454351 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3788428717650678264, guid: 225f675902b11a94887b0bf31fbf6e0a, type: 3}
+  m_PrefabInstance: {fileID: 4250022481887454350}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebcb57c7960afb848a9851ea93628379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4295903752996853841
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43794,6 +43805,10 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 593694133
       objectReference: {fileID: 0}
+    - target: {fileID: 3949673290633335313, guid: f2518a0fbb66bf04f88b08ddf5d3d3de, type: 3}
+      propertyPath: MatchManager
+      value: 
+      objectReference: {fileID: 4250022481887454351}
     - target: {fileID: 3949673290633335313, guid: f2518a0fbb66bf04f88b08ddf5d3d3de, type: 3}
       propertyPath: AStarAlgorithm
       value: 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CreatureAI : NetworkBehaviour
@@ -12,6 +13,9 @@ public class CreatureAI : NetworkBehaviour
     Vector3[] path;
     int pathfindingTargetIndex;
     public AStarAlgorithm AStarAlgorithm;
+    public MatchManager MatchManager;
+    private bool foundPlayers = false;
+    private Transform chosenPlayer;
 
 
     public override void OnNetworkSpawn()
@@ -27,11 +31,19 @@ public class CreatureAI : NetworkBehaviour
         {
             timeToMove -= Time.deltaTime;
         }
-        if (timeToMove <= 0)
+        else
         {
             chosenPathfindingTarget = PathfindingTargets[Random.Range(0, PathfindingTargets.Length)];
+            chosenPlayer = MatchManager.connectedPlayers[Random.Range(0, MatchManager.connectedPlayers.Length)];
+
+            foundPlayers = true;
 
             FindPath();
+        }
+
+        if (Vector3.Distance(transform.position, chosenPathfindingTarget.position) < 0.5 && foundPlayers)
+        {
+            transform.Rotate(chosenPlayer.position.x, chosenPlayer.position.z, Time.deltaTime);
         }
 
         Debug.Log(timeToMove);
@@ -39,8 +51,6 @@ public class CreatureAI : NetworkBehaviour
 
     void FindPath()
     {
-        Debug.Log("Find Path");
-        
         List<GridUnit> gridPath = AStarAlgorithm.FindPath(transform.position, chosenPathfindingTarget.position);
 
         path = new Vector3[gridPath.Count];
@@ -61,8 +71,6 @@ public class CreatureAI : NetworkBehaviour
 
     IEnumerator FollowPath()
     {
-        Debug.Log("Follow Path");
-        
         Vector3 currentUnit = path[0];
 
         while (true)
