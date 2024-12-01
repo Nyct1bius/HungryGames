@@ -128,6 +128,7 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
     {
         if (!isDebuffed)
         {
+            isDebuffed = true;
             currentSpeed = maxSpeed * speedMultiplierDebuff;
             curentRunnigSpeed = maxRunningSpeed * speedMultiplierDebuff;
             StartCoroutine(ReturnToOriginalVelocity());
@@ -138,6 +139,7 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
   IEnumerator ReturnToOriginalVelocity()
     {
         yield return new WaitForSeconds(3f);
+        isDebuffed = false;
         currentSpeed = maxSpeed;
         curentRunnigSpeed = maxRunningSpeed;
     }
