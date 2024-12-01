@@ -13,15 +13,20 @@ public class BuffObject : NetworkBehaviour
 
         if (enabledTimer <= 0)
         {
-            gameObject.SetActive(false);
+            ActiveBuffServerRpc();
         }
     }
-
-    void OnEnable()
+    [ServerRpc]
+    private void ActiveBuffServerRpc()
     {
-        enabledTimer = 15f;
+        ActiveClientRpc();
     }
-    private void OnDisable()
+    [ClientRpc]
+    private void ActiveClientRpc()
+    {
+        gameObject.SetActive(false);
+    }
+    void OnEnable()
     {
         enabledTimer = 15f;
     }
@@ -33,7 +38,7 @@ public class BuffObject : NetworkBehaviour
         {
             playerStats.GetComponent<PlayerStatsManager>().Damage(-25);
 
-            gameObject.SetActive(false);
+            ActiveBuffServerRpc();
         }
     }
 }
