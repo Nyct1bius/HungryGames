@@ -125,7 +125,7 @@ public class PlayerMovement : NetworkBehaviour
             return;
         }
 
-        currentSpeed *= 1.1f;
+        currentSpeed *= 1.8f;
     }
 
     private void StopRun()

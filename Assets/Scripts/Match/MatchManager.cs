@@ -21,6 +21,8 @@ public class MatchManager : NetworkBehaviour
     [SerializeField] private GameObject hud;
     [SerializeField] private Transform playerPrefab;
     [SerializeField] private int timeToStartMatch;
+    [Header("Players Connected")]
+    public Transform[] connectedPlayer;
     public GameObject pauseMenuUI;
     private int index = 0;
     private Transform currentPlayer;
@@ -54,6 +56,7 @@ public class MatchManager : NetworkBehaviour
        foreach(ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
         {
             Transform playerTransform = Instantiate(playerPrefab, spawnPoints[index].position, Quaternion.identity);
+            connectedPlayer[index] = playerTransform;
             index++;
             playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
         }

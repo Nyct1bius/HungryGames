@@ -973,6 +973,9 @@ MonoBehaviour:
   hud: {fileID: 4800874733729507337}
   playerPrefab: {fileID: 5738283523507734469, guid: d1b971d2fb910b645a81c1a7452c01a1, type: 3}
   timeToStartMatch: 5
+  connectedPlayer:
+  - {fileID: 0}
+  - {fileID: 0}
   pauseMenuUI: {fileID: 667486064208715897}
 --- !u!1 &2574215803423932261
 GameObject:

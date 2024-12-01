@@ -3219,7 +3219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e92bac5a4fe6fde4db180a0a40433313, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 2
   mainCameraPrefab: {fileID: 4420681178239266506, guid: b3d22653d4645d549a9d09af9121af59, type: 3}
   cameraOffset: {fileID: 8221502452850771785}
   fpsCameraPrefab: {fileID: 5508776495904927901, guid: 4a776612adf228c4fb03ee16f070ebf1, type: 3}
