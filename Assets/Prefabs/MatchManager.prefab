@@ -933,7 +933,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1894050556
+  GlobalObjectIdHash: 462179381
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -973,7 +973,7 @@ MonoBehaviour:
   hud: {fileID: 4800874733729507337}
   playerPrefab: {fileID: 5738283523507734469, guid: d1b971d2fb910b645a81c1a7452c01a1, type: 3}
   timeToStartMatch: 5
-  connectedPlayer:
+  connectedPlayers:
   - {fileID: 0}
   - {fileID: 0}
   pauseMenuUI: {fileID: 667486064208715897}
