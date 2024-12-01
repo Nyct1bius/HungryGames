@@ -16,7 +16,7 @@ public class BuffObject : NetworkBehaviour
             ActiveBuffServerRpc();
         }
     }
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     private void ActiveBuffServerRpc()
     {
         ActiveClientRpc();

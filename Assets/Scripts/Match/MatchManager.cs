@@ -80,7 +80,7 @@ public class MatchManager : NetworkBehaviour
          OnStartMatch?.Invoke();
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     private void ActiveBuffServerRpc()
     {
         ActiveClientRpc();

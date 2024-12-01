@@ -94,7 +94,7 @@ public class CreatureAI : NetworkBehaviour
         }
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     private void ActiveBuffServerRpc()
     {
         ActiveClientRpc();
