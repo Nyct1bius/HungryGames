@@ -36,8 +36,8 @@ public class CreatureAI : NetworkBehaviour
         }
         else
         {
-            chosenPathfindingTarget = PathfindingTargets[Random.Range(0, PathfindingTargets.Length + 1)];
-            chosenPlayer = MatchManager.connectedPlayers[Random.Range(0, MatchManager.connectedPlayers.Length + 1)];
+            chosenPathfindingTarget = PathfindingTargets[Random.Range(0, PathfindingTargets.Length)];
+            chosenPlayer = MatchManager.connectedPlayers[Random.Range(0, MatchManager.connectedPlayers.Length)];
 
             foundPlayers = true;
 
@@ -100,8 +100,8 @@ public class CreatureAI : NetworkBehaviour
     {
         if (timeToEnableInteractable <= 0)
         {
-            Buffs[Random.Range(0, Buffs.Length + 1)].SetActive(true);
-            Debuffs[Random.Range(0, Buffs.Length + 1)].SetActive(true);
+            Buffs[Random.Range(0, Buffs.Length)].SetActive(true);
+            Debuffs[Random.Range(0, Buffs.Length)].SetActive(true);
 
             timeToEnableInteractable = 15;
         }
