@@ -121,7 +121,8 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
     }
     public void Debuff(float damageMultiplierDebuff, float speedMultiplierDebuff, float armorDebuff)
     {
-
+        currentSpeed = maxSpeed * speedMultiplierDebuff;
+        curentRunnigSpeed = maxRunningSpeed * speedMultiplierDebuff;
     }
   
 }

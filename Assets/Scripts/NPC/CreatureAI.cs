@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using Unity.VisualScripting;
+using UnityEditor.Networking.PlayerConnection;
 using UnityEngine;
 
 public class CreatureAI : NetworkBehaviour
@@ -9,19 +10,21 @@ public class CreatureAI : NetworkBehaviour
     public Transform[] PathfindingTargets;
     private Transform chosenPathfindingTarget;
     public float MovementSpeed;
-    private float timeToMove;
+    private float timeToMove, timeToEnableInteractable;
     Vector3[] path;
     int pathfindingTargetIndex;
     public AStarAlgorithm AStarAlgorithm;
     public MatchManager MatchManager;
     private bool foundPlayers = false;
     private Transform chosenPlayer;
+    public GameObject[] Buffs, Debuffs;
 
 
     public override void OnNetworkSpawn()
     {
         chosenPathfindingTarget = PathfindingTargets[Random.Range(0, PathfindingTargets.Length)];
         timeToMove = Random.Range(7, 15);
+        timeToEnableInteractable = 15;
     }
 
     private void Update()
@@ -33,20 +36,20 @@ public class CreatureAI : NetworkBehaviour
         }
         else
         {
-            chosenPathfindingTarget = PathfindingTargets[Random.Range(0, PathfindingTargets.Length)];
-            chosenPlayer = MatchManager.connectedPlayers[Random.Range(0, MatchManager.connectedPlayers.Length)];
+            chosenPathfindingTarget = PathfindingTargets[Random.Range(0, PathfindingTargets.Length + 1)];
+            chosenPlayer = MatchManager.connectedPlayers[Random.Range(0, MatchManager.connectedPlayers.Length + 1)];
 
             foundPlayers = true;
 
             FindPath();
         }
 
-        if (Vector3.Distance(transform.position, chosenPathfindingTarget.position) < 0.5 && foundPlayers)
+        if (foundPlayers)
         {
-            transform.Rotate(chosenPlayer.position.x, chosenPlayer.position.z, Time.deltaTime);
+            transform.LookAt(chosenPlayer);
         }
 
-        Debug.Log(timeToMove);
+        EnableInteractables();
     }
 
     void FindPath()
@@ -90,6 +93,21 @@ public class CreatureAI : NetworkBehaviour
             transform.position = Vector3.MoveTowards(transform.position, currentUnit, MovementSpeed * Time.deltaTime);
 
             yield return null;
+        }
+    }
+
+    void EnableInteractables()
+    {
+        if (timeToEnableInteractable <= 0)
+        {
+            Buffs[Random.Range(0, Buffs.Length + 1)].SetActive(true);
+            Debuffs[Random.Range(0, Buffs.Length + 1)].SetActive(true);
+
+            timeToEnableInteractable = 15;
+        }
+        else
+        {
+            timeToEnableInteractable -= Time.deltaTime;
         }
     }
 }

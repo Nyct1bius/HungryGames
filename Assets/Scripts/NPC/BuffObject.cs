@@ -4,13 +4,7 @@ using UnityEngine;
 
 public class BuffObject : MonoBehaviour
 {
-    [SerializeField]
-    bool isDamageBuff, isSpeedBuff;
-
-    [SerializeField]
-    GameObject player;
-
-    private float enabledTimer = 20f;
+    private float enabledTimer = 15f;
 
     void Update()
     {
@@ -24,7 +18,11 @@ public class BuffObject : MonoBehaviour
 
     void OnEnable()
     {
-        enabledTimer = 20f;
+        enabledTimer = 15f;
+    }
+    private void OnDisable()
+    {
+        enabledTimer = 15f;
     }
 
     void OnTriggerEnter(Collider other)
@@ -32,18 +30,9 @@ public class BuffObject : MonoBehaviour
         PlayerStatsManager playerStats = other.GetComponent<PlayerStatsManager>();
         if (playerStats != null)
         {
-            if (isDamageBuff)
-            {
-                playerStats.GetComponent<PlayerStatsManager>().Buff(1.2f, 1, 1);
-            }
-            if (isSpeedBuff)
-            {
-                playerStats.GetComponent<PlayerStatsManager>().Buff(1, 1.25f, 1);
-            }
-            else
-            {
-                playerStats.GetComponent<PlayerStatsManager>().Buff(1, 1, 1.1f);
-            }
+            playerStats.GetComponent<PlayerStatsManager>().Damage(-25);
+
+            gameObject.SetActive(false);
         }
     }
 }
