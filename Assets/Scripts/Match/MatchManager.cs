@@ -80,11 +80,22 @@ public class MatchManager : NetworkBehaviour
          OnStartMatch?.Invoke();
     }
 
+    [ServerRpc]
+    private void ActiveBuffServerRpc()
+    {
+        ActiveClientRpc();
+    }
+    [ClientRpc]
+    private void ActiveClientRpc()
+    {
+        interactables.SetActive(true);
+    }
+
     IEnumerator waitToSpawnInteractables()
     {
         yield return new WaitForSeconds(5f);
 
-        interactables.SetActive(true);
+        ActiveBuffServerRpc();
     }
 
     public void PlayerDied(GameObject deadPlayer,GameObject playerMesh,ulong playerID)

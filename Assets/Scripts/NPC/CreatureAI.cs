@@ -94,12 +94,23 @@ public class CreatureAI : NetworkBehaviour
         }
     }
 
+    [ServerRpc]
+    private void ActiveBuffServerRpc()
+    {
+        ActiveClientRpc();
+    }
+    [ClientRpc]
+    private void ActiveClientRpc()
+    {
+        Buffs[Random.Range(0, Buffs.Length)].SetActive(true);
+        Debuffs[Random.Range(0, Buffs.Length)].SetActive(true);
+    }
+
     void EnableInteractables()
     {
         if (timeToEnableInteractable <= 0)
         {
-            Buffs[Random.Range(0, Buffs.Length)].SetActive(true);
-            Debuffs[Random.Range(0, Buffs.Length)].SetActive(true);
+            ActiveBuffServerRpc();
 
             timeToEnableInteractable = 15;
         }
