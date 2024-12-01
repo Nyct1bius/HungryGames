@@ -15,7 +15,7 @@ public class CreatureAI : NetworkBehaviour
     public MatchManager MatchManager;
     private bool foundPlayers = false;
     private Transform chosenPlayer;
-    public GameObject[] Buffs, Debuffs;
+    //public GameObject[] Buffs, Debuffs;
 
 
     public override void OnNetworkSpawn()
@@ -47,7 +47,7 @@ public class CreatureAI : NetworkBehaviour
             transform.LookAt(chosenPlayer);
         }
 
-        EnableInteractables();
+        //EnableInteractables();
     }
 
     void FindPath()
@@ -98,8 +98,8 @@ public class CreatureAI : NetworkBehaviour
     {
         if (timeToEnableInteractable <= 0)
         {
-            Buffs[Random.Range(0, Buffs.Length)].SetActive(true);
-            Debuffs[Random.Range(0, Buffs.Length)].SetActive(true);
+            //Buffs[Random.Range(0, Buffs.Length)].SetActive(true);
+            //Debuffs[Random.Range(0, Buffs.Length)].SetActive(true);
 
             timeToEnableInteractable = 15;
         }
