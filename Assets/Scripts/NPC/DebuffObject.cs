@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class DebuffObject : MonoBehaviour
+public class DebuffObject : NetworkBehaviour
 {
     private float enabledTimer = 15f;
 
