@@ -27,6 +27,7 @@ public class PlayerCameraManager : MonoBehaviour
     }
     private void Update()
     {
+        if (_inputManager.IsPaused()) return;
         Vector2 mousePos = _inputManager.GetMouseDelta();
         float mouseX = mousePos.x * Time.deltaTime * _sensibility;
         float mouseY = mousePos.y * Time.deltaTime * _sensibility;

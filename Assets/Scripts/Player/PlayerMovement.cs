@@ -81,6 +81,7 @@ public class PlayerMovement : NetworkBehaviour
         {
             return;
         }
+        if(inputManager.IsPaused()) return; 
 
         HandleGravity();
         Movement();

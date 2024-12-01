@@ -10,7 +10,8 @@ public class InputManager : NetworkBehaviour
 {
     PlayerInputAction playerInputActions;
     private bool shooting;
-    public event Action OnWalk,OnStopWalk, OnJump,OnRun,OnStopRun,OnReload; 
+    private bool isPaused;
+    public event Action OnWalk, OnStopWalk, OnJump, OnRun, OnStopRun, OnReload;
     private void Awake()
     {
         playerInputActions = new PlayerInputAction();
@@ -26,6 +27,7 @@ public class InputManager : NetworkBehaviour
         playerInputActions.Controls.Reload.performed += PlayerReload;
         playerInputActions.Controls.Shoot.performed += ShootPerformed;
         playerInputActions.Controls.Shoot.canceled += ShootCanceled;
+        playerInputActions.Controls.Paused.performed += PausePerformed;
     }
     private void OnDisable()
     {
@@ -38,13 +40,14 @@ public class InputManager : NetworkBehaviour
         playerInputActions.Controls.Reload.performed -= PlayerReload;
         playerInputActions.Controls.Shoot.performed -= ShootPerformed;
         playerInputActions.Controls.Shoot.canceled -= ShootCanceled;
+        playerInputActions.Controls.Paused.performed -= PausePerformed;
     }
 
     public Vector2 GetNormalizedInputDirection()
     {
         Vector2 inputDirection = playerInputActions.Controls.Move.ReadValue<Vector2>();
         inputDirection.Normalize();
-        return inputDirection;           
+        return inputDirection;
     }
 
     public Vector2 GetMouseDelta()
@@ -88,5 +91,12 @@ public class InputManager : NetworkBehaviour
     {
         shooting = false;
     }
-
+    public bool IsPaused()
+    {
+        return isPaused;
+    }
+    private void PausePerformed(InputAction.CallbackContext context)
+    {
+        isPaused = !isPaused;
+    }
 }

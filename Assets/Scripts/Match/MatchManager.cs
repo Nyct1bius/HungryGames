@@ -21,6 +21,7 @@ public class MatchManager : NetworkBehaviour
     [SerializeField] private GameObject hud;
     [SerializeField] private Transform playerPrefab;
     [SerializeField] private int timeToStartMatch;
+    public GameObject pauseMenuUI;
     private int index = 0;
     private Transform currentPlayer;
 
@@ -48,7 +49,6 @@ public class MatchManager : NetworkBehaviour
     {
         NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= SceneManager_OnLoadEventCompleted;
     }
-
     private void SceneManager_OnLoadEventCompleted(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
     {
        foreach(ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
@@ -150,7 +150,8 @@ public class MatchManager : NetworkBehaviour
     IEnumerator RevivePlayer(GameObject deadPlayer, GameObject playerMesh)
     {
         yield return new WaitForSeconds(5f);
-        int randomNunber = UnityEngine.Random.Range(0, spawnPoints.Length + 1);
+        int randomNunber = UnityEngine.Random.Range(0, spawnPoints.Length);
+        Debug.Log(spawnPoints[randomNunber]);
         deadPlayer.transform.GetComponent<PlayerStatsManager>().Revive();
         deadPlayer.transform.position = spawnPoints[randomNunber].position;
         playerMesh.transform.position = new Vector3(spawnPoints[randomNunber].position.x, spawnPoints[randomNunber].position.y - 1.134f, spawnPoints[randomNunber].position.z);

@@ -39,6 +39,23 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
         playerMovement.enabled = false;
         inputManager.enabled = false;
     }
+    private void Update()
+    {
+        if (inputManager.IsPaused())
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            playerMovement.enabled = false;
+             MatchManager.localInstance.pauseMenuUI.SetActive(true);
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            playerMovement.enabled = true;
+            MatchManager.localInstance.pauseMenuUI.SetActive(false);
+        }
+    }
     private void OnEnable()
     {
         MatchManager.localInstance.OnFinishedMatch += FinishedMatch;

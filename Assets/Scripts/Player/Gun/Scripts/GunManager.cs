@@ -8,6 +8,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.VFX;
 
 public class GunManager : NetworkBehaviour
 {
@@ -19,6 +20,10 @@ public class GunManager : NetworkBehaviour
     [SerializeField] private InputManager inputManager;
     [SerializeField] private TextMeshProUGUI bulletCounterUI;
     [SerializeField] private TextMeshProUGUI gunNameUI;
+    [SerializeField] private LayerMask ignoredByCamera;
+    [SerializeField] private VisualEffect muzzleFlash;
+    [SerializeField] private AudioClip[] shootsSounds;
+    AudioSource audioSource;
     private bool canShoot = true;
     private int currentAmmo;
     private RectTransform crosshair;
@@ -34,6 +39,11 @@ public class GunManager : NetworkBehaviour
     TrailRenderer localTrail;
     public override void OnNetworkSpawn()
     {
+        if (!IsOwner)
+        {
+            gameObject.layer = ignoredByCamera;
+        }
+        audioSource = GetComponent<AudioSource>();
         currentBulletIndex = 0;
         currentAmmo = guns.types[currentBulletIndex].maxAmmo;
     }
@@ -50,6 +60,7 @@ public class GunManager : NetworkBehaviour
     private void Update()
     {
         if (!IsOwner) return;
+        if (inputManager.IsPaused()) return;
         if (inputManager.PlayerShoot() && canShoot)
         {
             Shoot();
@@ -68,8 +79,10 @@ public class GunManager : NetworkBehaviour
             canShoot = false;
             if (Physics.Raycast(mouseWorldPos, out RaycastHit hit, float.MaxValue, mask))
             {
+                muzzleFlash.Play();
                 playerAnimations.PlayShootAnimation();
                 SpawnTrailServerRpc(hit.point);
+                PlayShootSoundServerRpc();
                 StartCoroutine(WaitToDisplayBulletHit(hit, hit.collider.gameObject));
                 if (hit.transform.TryGetComponent<PlayerStatsManager>(out PlayerStatsManager statsManager))
                 {
@@ -82,7 +95,6 @@ public class GunManager : NetworkBehaviour
                 }
 
             }
-            //guns.types[currentBulletIndex].shootingSystem.Play();
             Debug.Log(currentAmmo);
             bulletCounterUI.text = currentAmmo.ToString();
             StartCoroutine(FireRateDelay(guns.types[currentBulletIndex].fireRate));
@@ -154,6 +166,18 @@ public class GunManager : NetworkBehaviour
     #endregion
     #region ClientCalls
 
+    [ServerRpc]
+    private void PlayShootSoundServerRpc()
+    {
+        PlayShootSoundClientRpc();
+    }
+    [ClientRpc]
+    private void PlayShootSoundClientRpc()
+    {
+        int randomNunber = UnityEngine.Random.Range(0, shootsSounds.Length);
+        audioSource.clip = shootsSounds[randomNunber];
+        audioSource.Play();
+    }
     [ServerRpc]
     private void HitServerRpc(ulong networkObjectID, int damage)
     {

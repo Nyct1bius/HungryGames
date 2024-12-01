@@ -8,8 +8,8 @@ public class PlayerVisual : NetworkBehaviour
 {
     [Header("Meshes")]
     [SerializeField] private GameObject head;
-    [SerializeField] private SkinnedMeshRenderer torso;
-    [SerializeField] private SkinnedMeshRenderer legs;
+    [SerializeField] private GameObject torso;
+    [SerializeField] private GameObject legs;
 
     [Header("Alternative Materials")]
     [SerializeField] private Material alternativeHeadMat;
@@ -18,6 +18,9 @@ public class PlayerVisual : NetworkBehaviour
 
     [Header("Components")]
     [SerializeField] private InputManager inputManager;
+    [SerializeField] private LayerMask noVisualizeByCamera;
+    [Header("Audios")]
+    [SerializeField] private AudioClip[] walkAudios;
     private Animator animator;
 
     public override void OnNetworkSpawn()
@@ -29,10 +32,16 @@ public class PlayerVisual : NetworkBehaviour
         }
         else
         {
+            
             head.SetActive(true);
             SkinnedMeshRenderer headeRender = head.GetComponent<SkinnedMeshRenderer>();
-            legs.material = alternativeLegMat;
-            torso.material = alternativeTorsoMat;
+            SkinnedMeshRenderer legsRender = legs.GetComponent<SkinnedMeshRenderer>();
+            SkinnedMeshRenderer torsoRender = torso.GetComponent<SkinnedMeshRenderer>();
+            head.layer = noVisualizeByCamera;
+            legs.layer = noVisualizeByCamera;   
+            torso.layer = noVisualizeByCamera;
+            legsRender.material = alternativeLegMat;
+            torsoRender.material = alternativeTorsoMat;
             headeRender.material = alternativeHeadMat; 
         }
 
@@ -68,23 +77,27 @@ public class PlayerVisual : NetworkBehaviour
     private void Walk()
     {
         if (!IsOwner) return;
+        if (inputManager.IsPaused()) return;
         animator.SetBool("IsWalking", true);
     }
     private void StopWalk()
     {
         if (!IsOwner) return;
+        if (inputManager.IsPaused()) return;
         animator.SetBool("IsWalking", false);
         StopRun();
     }
     private void Run()
     {
         if (!IsOwner) return;
+        if (inputManager.IsPaused()) return;
         animator.SetBool("IsRunning", true);
     }
 
     private void StopRun()
     {
         if (!IsOwner) return;
+        if (inputManager.IsPaused()) return;
         animator.SetBool("IsRunning", false);
     }
 
@@ -97,4 +110,15 @@ public class PlayerVisual : NetworkBehaviour
         animator.SetTrigger("IsReloading");
     }
 
+    [ServerRpc(RequireOwnership = false)]
+    public void PlayWalkSoundServerRpc()
+    {
+        PlayWalkSoundClientRpc();
+    }
+    [ClientRpc]
+    private void PlayWalkSoundClientRpc()
+    {
+        int randomNunber = UnityEngine.Random.Range(0, walkAudios.Length);
+        AudioSource.PlayClipAtPoint(walkAudios[randomNunber], transform.position, 2f);
+    }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Unity.Netcode;
 
 public class GamePlayUI : MonoBehaviour
 {
@@ -28,24 +29,10 @@ public class GamePlayUI : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown("p") || Input.GetKeyDown(KeyCode.Escape) && !_isPause)
-        {
-            _menuScreen.SetActive(true);
-            _isPause = true;
-        }
-        else if(_isPause && Input.GetKeyDown("p") || Input.GetKeyDown(KeyCode.Escape))
-        {
-            _menuScreen.SetActive(false);
-            _isPause = false;
-        }
-    }
 
     public void Titulo()
     {
-        SceneManager.LoadScene("Inicio");
+        NetworkManager.Singleton.SceneManager.LoadScene("Lobby", LoadSceneMode.Single);
     }
 
     public void FimDaPartida(bool host, bool empate)
