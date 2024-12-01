@@ -43819,6 +43819,36 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e3a2aa747ccce134e9383a9d76dc7cb1, type: 3}
+--- !u!1 &3520981693906341395 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6447658427324413272, guid: e3a2aa747ccce134e9383a9d76dc7cb1, type: 3}
+  m_PrefabInstance: {fileID: 3520981693906341394}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3520981693906341396 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7486219020915358242, guid: e3a2aa747ccce134e9383a9d76dc7cb1, type: 3}
+  m_PrefabInstance: {fileID: 3520981693906341394}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3520981693906341397 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2316062134619319371, guid: e3a2aa747ccce134e9383a9d76dc7cb1, type: 3}
+  m_PrefabInstance: {fileID: 3520981693906341394}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3520981693906341398 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4357532163401969452, guid: e3a2aa747ccce134e9383a9d76dc7cb1, type: 3}
+  m_PrefabInstance: {fileID: 3520981693906341394}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3520981693906341399 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5627798510701288337, guid: e3a2aa747ccce134e9383a9d76dc7cb1, type: 3}
+  m_PrefabInstance: {fileID: 3520981693906341394}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3520981693906341400 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2334657544712780327, guid: e3a2aa747ccce134e9383a9d76dc7cb1, type: 3}
+  m_PrefabInstance: {fileID: 3520981693906341394}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4250022481887454350
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43922,15 +43952,15 @@ PrefabInstance:
     - target: {fileID: 3949673290633335313, guid: f2518a0fbb66bf04f88b08ddf5d3d3de, type: 3}
       propertyPath: Buffs.Array.data[1]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3520981693906341400}
     - target: {fileID: 3949673290633335313, guid: f2518a0fbb66bf04f88b08ddf5d3d3de, type: 3}
       propertyPath: Buffs.Array.data[2]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3520981693906341399}
     - target: {fileID: 3949673290633335313, guid: f2518a0fbb66bf04f88b08ddf5d3d3de, type: 3}
       propertyPath: Buffs.Array.data[3]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3520981693906341398}
     - target: {fileID: 3949673290633335313, guid: f2518a0fbb66bf04f88b08ddf5d3d3de, type: 3}
       propertyPath: Debuffs.Array.data[0]
       value: 
@@ -43938,15 +43968,15 @@ PrefabInstance:
     - target: {fileID: 3949673290633335313, guid: f2518a0fbb66bf04f88b08ddf5d3d3de, type: 3}
       propertyPath: Debuffs.Array.data[1]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3520981693906341397}
     - target: {fileID: 3949673290633335313, guid: f2518a0fbb66bf04f88b08ddf5d3d3de, type: 3}
       propertyPath: Debuffs.Array.data[2]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3520981693906341396}
     - target: {fileID: 3949673290633335313, guid: f2518a0fbb66bf04f88b08ddf5d3d3de, type: 3}
       propertyPath: Debuffs.Array.data[3]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3520981693906341395}
     - target: {fileID: 3949673290633335313, guid: f2518a0fbb66bf04f88b08ddf5d3d3de, type: 3}
       propertyPath: PathfindingTargets.Array.data[0]
       value: 
