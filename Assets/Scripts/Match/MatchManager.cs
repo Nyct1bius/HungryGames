@@ -26,6 +26,7 @@ public class MatchManager : NetworkBehaviour
     public GameObject pauseMenuUI;
     private int index = 0;
     private Transform currentPlayer;
+    [SerializeField] GameObject interactables;
 
 
     private NetworkVariable<int> hostPoints = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -46,6 +47,7 @@ public class MatchManager : NetworkBehaviour
             NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneManager_OnLoadEventCompleted;
         }
         StartCoroutine(waitToStartMatch());
+        StartCoroutine(waitToSpawnInteractables());
     }
     private void OnDisable()
     {
@@ -76,6 +78,13 @@ public class MatchManager : NetworkBehaviour
        yield return new WaitForSeconds(1f);
         counterPanel.SetActive(false);
          OnStartMatch?.Invoke();
+    }
+
+    IEnumerator waitToSpawnInteractables()
+    {
+        yield return new WaitForSeconds(5f);
+
+        interactables.SetActive(true);
     }
 
     public void PlayerDied(GameObject deadPlayer,GameObject playerMesh,ulong playerID)
