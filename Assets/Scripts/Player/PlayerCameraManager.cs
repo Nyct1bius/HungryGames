@@ -64,7 +64,7 @@ public class PlayerCameraManager : MonoBehaviour
         _playerHeadRef = playerVisual;
         playerBody = playerBodyRef;
         _inputManager = inputManager;
-        _sensibility = sensibility * 10;
+        _sensibility = sensibility * 5;
         _gunManager = gunManager;
         _playerVisual = animationManager;
         vCamera.Follow = transform;

@@ -3227,14 +3227,14 @@ MonoBehaviour:
   alternativeHead: {fileID: 1501196792005229124}
   vCamera: {fileID: 3327718317794579990}
   gunManager: {fileID: 8071344826008628426}
-  sensibility: 5
+  sensibility: 3
   jumpForce: 10
   groundCheck: {fileID: 3542644648482602289}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   detectionSphereRadius: 0.7
-  gravity: -4
+  gravity: -5
   crosshair: {fileID: 894827218401227500}
   animationManager: {fileID: 5404809578374238528}
   playerBodyRef: {fileID: 4686258252571493836}
