@@ -23,6 +23,7 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
 
     private int currentHealth;
     private bool isDead;
+    private bool isDebuffed;
 
     public override void OnNetworkSpawn()
     {
@@ -94,6 +95,10 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
             {
                 Death();
             }
+            if(currentHealth > maxHealth)
+            {
+                currentHealth = maxHealth;
+            }
         }
     }
     private void Death()
@@ -121,8 +126,21 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
     }
     public void Debuff(float damageMultiplierDebuff, float speedMultiplierDebuff, float armorDebuff)
     {
-        currentSpeed = maxSpeed * speedMultiplierDebuff;
-        curentRunnigSpeed = maxRunningSpeed * speedMultiplierDebuff;
+        if (!isDebuffed)
+        {
+            isDebuffed = true;
+            currentSpeed = maxSpeed * speedMultiplierDebuff;
+            curentRunnigSpeed = maxRunningSpeed * speedMultiplierDebuff;
+            StartCoroutine(ReturnToOriginalVelocity());
+        }
+   
     }
-  
+
+  IEnumerator ReturnToOriginalVelocity()
+    {
+        yield return new WaitForSeconds(3f);
+        isDebuffed = false;
+        currentSpeed = maxSpeed;
+        curentRunnigSpeed = maxRunningSpeed;
+    }
 }
