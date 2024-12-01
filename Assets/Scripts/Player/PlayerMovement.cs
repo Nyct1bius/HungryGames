@@ -8,8 +8,7 @@ using UnityEngine;
 public class PlayerMovement : NetworkBehaviour
 {
     [Header("Movement variables")]
-    [SerializeField] private float speed;
-    private float currentSpeed;
+    PlayerStatsManager statsManager;
 
 
     [Header("Camera variables")]
@@ -45,6 +44,8 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private PlayerVisual animationManager;
     [SerializeField] private Transform playerBodyRef;
 
+    private bool isRunning;
+
     public override void OnNetworkSpawn()
     {
         if (IsOwner)
@@ -61,7 +62,8 @@ public class PlayerMovement : NetworkBehaviour
     {
         inputManager = GetComponent<InputManager>();
         rb = GetComponent<Rigidbody>();
-        currentSpeed = speed;
+        statsManager = GetComponent<PlayerStatsManager>();
+        
     }
     private void OnEnable()
     {
@@ -91,7 +93,15 @@ public class PlayerMovement : NetworkBehaviour
         Vector2 inputDirection = inputManager.GetNormalizedInputDirection();
         Vector3 moveDir = mainCameraRef.transform.forward * inputDirection.y + mainCameraRef.transform.right * inputDirection.x;
         moveDir.y = 0;
-        rb.AddForce(moveDir * currentSpeed, ForceMode.VelocityChange);
+        if (!isRunning)
+        {
+            rb.AddForce(moveDir * statsManager.currentSpeed, ForceMode.VelocityChange);
+        }
+        else
+        {
+            rb.AddForce(moveDir * statsManager.curentRunnigSpeed, ForceMode.VelocityChange);
+        }
+       
     }
     private void Jump()
     {
@@ -124,8 +134,7 @@ public class PlayerMovement : NetworkBehaviour
         {
             return;
         }
-
-        currentSpeed *= 1.8f;
+        isRunning = true;
     }
 
     private void StopRun()
@@ -134,8 +143,7 @@ public class PlayerMovement : NetworkBehaviour
         {
             return;
         }
-
-        currentSpeed = speed;
+        isRunning = false;
     }
 
     private bool IsGrounded()

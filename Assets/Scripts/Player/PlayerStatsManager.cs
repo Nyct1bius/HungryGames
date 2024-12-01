@@ -7,9 +7,12 @@ using UnityEngine;
 
 public class PlayerStatsManager : NetworkBehaviour, IBuffable
 {
-    [SerializeField] public HealthBar healthBar;
-    [SerializeField] public int maxHealth;
-    [SerializeField] public int maxSpeed;
+    public HealthBar healthBar;
+    public int maxHealth;
+    [SerializeField] private float maxSpeed;
+    [HideInInspector] public float currentSpeed;
+    [SerializeField] private float maxRunningSpeed;
+    [HideInInspector] public float curentRunnigSpeed;
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private InputManager inputManager;
     [SerializeField] private PlayerVisual playerVisual;
@@ -23,7 +26,8 @@ public class PlayerStatsManager : NetworkBehaviour, IBuffable
 
     public override void OnNetworkSpawn()
     {
-
+        currentSpeed = maxSpeed;
+        curentRunnigSpeed = maxRunningSpeed;
         if (IsOwner)
         {
             currentHealth = maxHealth;

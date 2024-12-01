@@ -26,14 +26,5 @@ public class DespawnTrail : NetworkBehaviour
         GetComponent<NetworkObject>().Despawn();
         Destroy(this);
     }
-    private void OnCollisionEnter(Collision collision)
-    {
-        //PlayerStatsManager playerStats = collision.gameObject.GetComponent<PlayerStatsManager>();
-        //if (playerStats != null)
-        //{
-        //    playerStats.Damage(guns.types[bulletIndex].damage);
-        //}
-
-    }
 }
 

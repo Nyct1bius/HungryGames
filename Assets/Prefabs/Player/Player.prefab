@@ -3198,7 +3198,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBar: {fileID: 2717158976676743699}
   maxHealth: 100
-  maxSpeed: 0
+  maxSpeed: 2
+  currentSpeed: 0
+  maxRunningSpeed: 3.6
+  runnigSpeed: 3.6
   playerMovement: {fileID: 422153264897805532}
   inputManager: {fileID: 3782179939153206032}
   playerVisual: {fileID: 5404809578374238528}
@@ -3220,6 +3223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
+  statsManager: {fileID: 0}
   mainCameraPrefab: {fileID: 4420681178239266506, guid: b3d22653d4645d549a9d09af9121af59, type: 3}
   cameraOffset: {fileID: 8221502452850771785}
   fpsCameraPrefab: {fileID: 5508776495904927901, guid: 4a776612adf228c4fb03ee16f070ebf1, type: 3}
